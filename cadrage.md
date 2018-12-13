@@ -2,8 +2,7 @@
 
 ## Tâches à réaliser, et à reporter sur la feuille de suivi de projet: 
 
-
-- [x] Groupe formé
+- [x] Groupe formé
 - [x] Groupe Github créé
 - [x] Github page de projet créée avec un Hello World.
 
