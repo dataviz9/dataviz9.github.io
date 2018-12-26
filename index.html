@@ -1,1 +1,33 @@
-Hello world
+<html>
+    <head>
+        <title>Titre de la page TODO</title>
+    </head>
+    <body>
+            <?php
+
+            $login = 'any-login';
+            $password = '<api key>';
+            $request =  'http://api.footprintnetwork.org/v1/types';
+            
+            // Initialize the session
+            $session = curl_init($request);
+            
+            // Set curl options curl_setopt($session, CURLOPT_HEADER, true);
+            curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($session, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+            curl_setopt($session, CURLOPT_USERPWD, "$login:$password");
+            
+            
+            // Add this if you want json curl_setopt($session, CURLOPT_HTTPHEADER,array('Accept: application/json') );
+            
+            // Make the request $response = curl_exec($session);
+            
+            // Close the curl session curl_close($session);
+            
+            echo($response);
+            
+            ?>
+        <h1>Titre de la visu TODO</h1>
+        <p>Hello World</p>
+    </body>
+</html>
