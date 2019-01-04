@@ -1,78 +1,24 @@
-﻿country,year,overshoot_day
-Latvia,1992,564.80663414986304
-Latvia,1993,593.63795440340505
-Latvia,1994,700.21408884630398
-Latvia,1995,709.28846184456404
-Latvia,1996,569.60145281923099
-Latvia,1997,679.49915867367497
-Latvia,1998,686.45300107410606
-Latvia,1999,503.01347195035999
-Latvia,2000,520.82906927522504
-Latvia,2001,560.54398447815697
-Latvia,2002,520.27284538377603
-Latvia,2003,518.56959628738605
-Latvia,2004,484.62353515316897
-Latvia,2005,471.52326912209901
-Latvia,2006,427.23359458559202
-Latvia,2007,405.47584681182201
-Latvia,2008,563.46301228730294
-Latvia,2009,611.43233355674101
-Latvia,2010,632.11174330944596
-Latvia,2011,552.26126154273197
-Latvia,2012,593.514359035658
-Latvia,2013,556.98080917815696
-Latvia,2014,519.543917972435
-Lao People's Democratic Republic,1961,894.22820743814395
-Lao People's Democratic Republic,1962,863.05420209971396
-Lao People's Democratic Republic,1963,834.40842229535394
-Lao People's Democratic Republic,1964,792.37349486675498
-Lao People's Democratic Republic,1965,763.62517142883803
-Lao People's Democratic Republic,1966,730.38081347034995
-Lao People's Democratic Republic,1967,692.84533220257299
-Lao People's Democratic Republic,1968,713.96168382835901
-Lao People's Democratic Republic,1969,691.79316821073201
-Lao People's Democratic Republic,1970,659.49065894349701
-Lao People's Democratic Republic,1971,674.92488497845602
-Lao People's Democratic Republic,1972,661.46333398211505
-Lao People's Democratic Republic,1973,657.15860697007497
-Lao People's Democratic Republic,1974,688.31217060601102
-Lao People's Democratic Republic,1975,708.26132213820699
-Lao People's Democratic Republic,1976,697.51732783935904
-Lao People's Democratic Republic,1977,671.15538173767902
-Lao People's Democratic Republic,1978,642.08873522847205
-Lao People's Democratic Republic,1979,636.56584924218805
-Lao People's Democratic Republic,1980,635.05381735052299
-Lao People's Democratic Republic,1981,621.03876132353798
-Lao People's Democratic Republic,1982,606.58782866566401
-Lao People's Democratic Republic,1983,589.21529652868901
-Lao People's Democratic Republic,1984,581.87252003280503
-Lao People's Democratic Republic,1985,566.09373634527299
-Lao People's Democratic Republic,1986,554.16475082492298
-Lao People's Democratic Republic,1987,553.36476053061199
-Lao People's Democratic Republic,1988,566.21852549270295
-Lao People's Democratic Republic,1989,562.69164764699099
-Lao People's Democratic Republic,1990,536.75910067509699
-Lao People's Democratic Republic,1991,528.73251922813699
-Lao People's Democratic Republic,1992,553.45018764380904
-Lao People's Democratic Republic,1993,543.31484109595306
-Lao People's Democratic Republic,1994,524.39256896529503
-Lao People's Democratic Republic,1995,506.87324831929902
-Lao People's Democratic Republic,1996,508.59976267630901
-Lao People's Democratic Republic,1997,480.37401351680597
-Lao People's Democratic Republic,1998,466.97775975607499
-Lao People's Democratic Republic,1999,451.42213231041399
-Lao People's Democratic Republic,2000,476.81751624093903
-Lao People's Democratic Republic,2001,469.49301127221997
-Lao People's Democratic Republic,2002,457.51103979120899
-Lao People's Democratic Republic,2003,464.86931430913103
-Lao People's Democratic Republic,2004,460.833285643144
-Lao People's Democratic Republic,2005,453.62158057528097
-Lao People's Democratic Republic,2006,449.47093731710498
-Lao People's Democratic Republic,2007,472.70186875573899
-Lao People's Democratic Republic,2008,487.76661153348198
-Lao People's Democratic Republic,2009,469.043209325649
-Lao People's Democratic Republic,2010,442.12330868731499
-Lao People's Democratic Republic,2011,447.47605399550201
-Lao People's Democratic Republic,2012,445.906784303412
-Lao People's Democratic Republic,2013,376.95686176348698
-Lao People's Democratic Republic,2014,374.68481095557098
+"year","country","overshoot_day","country_3_code"
+1992,"Latvia",203.880304588843,"LVA"
+1993,"Latvia",205.819202007475,"LVA"
+1994,"Latvia",242.825953316549,"LVA"
+1995,"Latvia",242.735406626802,"LVA"
+1996,"Latvia",188.319021217418,"LVA"
+1997,"Latvia",219.547888770596,"LVA"
+1998,"Latvia",219.867515733279,"LVA"
+1999,"Latvia",160.266771006728,"LVA"
+2000,"Latvia",160.526728527018,"LVA"
+2001,"Latvia",169.350979944475,"LVA"
+2002,"Latvia",151.245543998849,"LVA"
+2003,"Latvia",148.107968153401,"LVA"
+2004,"Latvia",136.535953907461,"LVA"
+2005,"Latvia",125.270261963267,"LVA"
+2006,"Latvia",112.965783414526,"LVA"
+2007,"Latvia",100.600668724927,"LVA"
+2008,"Latvia",138.142699229008,"LVA"
+2009,"Latvia",145.655781779181,"LVA"
+2010,"Latvia",149.004198518363,"LVA"
+2011,"Latvia",128.47883762581,"LVA"
+2012,"Latvia",126.616408949368,"LVA"
+2013,"Latvia",119.896112133447,"LVA"
+2014,"Latvia",109.130555819396,"LVA"

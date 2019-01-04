@@ -1,163 +1,55 @@
-﻿country,year,overshoot_day
-Cambodia,1961,399.29719476800102
-Cambodia,1962,400.09530953883501
-Cambodia,1963,402.277032427015
-Cambodia,1964,410.19089259056398
-Cambodia,1965,411.459416192346
-Cambodia,1966,395.13838140124301
-Cambodia,1967,398.59080152518197
-Cambodia,1968,400.94614117907702
-Cambodia,1969,382.646240789312
-Cambodia,1970,398.17778583157701
-Cambodia,1971,398.96087054579101
-Cambodia,1972,392.86797488060699
-Cambodia,1973,379.30031957942901
-Cambodia,1974,374.31441543979503
-Cambodia,1975,383.29666291789698
-Cambodia,1976,398.03694145422901
-Cambodia,1977,402.900043337993
-Cambodia,1978,421.22306322788
-Cambodia,1979,416.40607943561002
-Cambodia,1980,430.18829397249601
-Cambodia,1981,425.74798418839703
-Cambodia,1982,414.05440907098301
-Cambodia,1983,415.12055240334502
-Cambodia,1984,413.96916785421797
-Cambodia,1985,407.73478213365098
-Cambodia,1986,398.29812211669503
-Cambodia,1987,392.21060936358998
-Cambodia,1988,391.51066669154602
-Cambodia,1989,391.98008087486397
-Cambodia,1990,376.98652233203899
-Cambodia,1991,373.01762753077901
-Cambodia,1992,381.93191837292102
-Cambodia,1993,373.88453668475898
-Cambodia,1994,366.52556929267098
-Cambodia,1995,358.08955398334399
-Cambodia,1996,353.75311117705598
-Cambodia,1997,353.53229120115702
-Cambodia,1998,346.46633755981202
-Cambodia,1999,340.31781353229098
-Cambodia,2000,353.54615278933102
-Cambodia,2001,344.75507571056897
-Cambodia,2002,344.37581737299001
-Cambodia,2003,347.27174579012802
-Cambodia,2004,348.367110687202
-Cambodia,2005,351.87459540615203
-Cambodia,2006,345.69993615357703
-Cambodia,2007,333.48369039219301
-Cambodia,2008,344.07520464168198
-Cambodia,2009,342.89975992781501
-Cambodia,2010,338.58379488365898
-Cambodia,2011,328.69477782802102
-Cambodia,2012,316.44068029532002
-Cambodia,2013,320.95008822622299
-Cambodia,2014,307.02373022084498
-"Korea, Democratic People's Republic of",1961,373.84310415789997
-"Korea, Democratic People's Republic of",1962,353.35317586388402
-"Korea, Democratic People's Republic of",1963,336.76342104156902
-"Korea, Democratic People's Republic of",1964,319.33686143800497
-"Korea, Democratic People's Republic of",1965,273.69388931825699
-"Korea, Democratic People's Republic of",1966,257.51988624111698
-"Korea, Democratic People's Republic of",1967,238.41173494382599
-"Korea, Democratic People's Republic of",1968,221.040430221939
-"Korea, Democratic People's Republic of",1969,210.45299509737501
-"Korea, Democratic People's Republic of",1970,186.98111760031199
-"Korea, Democratic People's Republic of",1971,140.82153994674101
-"Korea, Democratic People's Republic of",1972,135.33620701267
-"Korea, Democratic People's Republic of",1973,132.34302047486901
-"Korea, Democratic People's Republic of",1974,132.08604219280301
-"Korea, Democratic People's Republic of",1975,131.36195855486301
-"Korea, Democratic People's Republic of",1976,125.180165066654
-"Korea, Democratic People's Republic of",1977,120.382785149581
-"Korea, Democratic People's Republic of",1978,116.129532872425
-"Korea, Democratic People's Republic of",1979,108.63224022864
-"Korea, Democratic People's Republic of",1980,103.75466630208599
-"Korea, Democratic People's Republic of",1981,103.50965310106299
-"Korea, Democratic People's Republic of",1982,98.403362565556094
-"Korea, Democratic People's Republic of",1983,99.608941444167897
-"Korea, Democratic People's Republic of",1984,98.398874329064796
-"Korea, Democratic People's Republic of",1985,95.748795126165405
-"Korea, Democratic People's Republic of",1986,98.960959085009307
-"Korea, Democratic People's Republic of",1987,102.98900499486599
-"Korea, Democratic People's Republic of",1988,100.79411289152399
-"Korea, Democratic People's Republic of",1989,102.11900027917
-"Korea, Democratic People's Republic of",1990,107.326625856199
-"Korea, Democratic People's Republic of",1991,113.714206897436
-"Korea, Democratic People's Republic of",1992,118.089898504819
-"Korea, Democratic People's Republic of",1993,120.72736546770901
-"Korea, Democratic People's Republic of",1994,118.335285875119
-"Korea, Democratic People's Republic of",1995,105.218304367385
-"Korea, Democratic People's Republic of",1996,104.034234510988
-"Korea, Democratic People's Republic of",1997,103.48568594744
-"Korea, Democratic People's Republic of",1998,110.04567738839999
-"Korea, Democratic People's Republic of",1999,102.76805504517399
-"Korea, Democratic People's Republic of",2000,92.165086156714594
-"Korea, Democratic People's Republic of",2001,91.729025189672697
-"Korea, Democratic People's Republic of",2002,92.863118903339398
-"Korea, Democratic People's Republic of",2003,88.083429053814498
-"Korea, Democratic People's Republic of",2004,85.785863476651102
-"Korea, Democratic People's Republic of",2005,81.359986133092605
-"Korea, Democratic People's Republic of",2006,78.453513162087106
-"Korea, Democratic People's Republic of",2007,76.062139529175695
-"Korea, Democratic People's Republic of",2008,73.628229881174406
-"Korea, Democratic People's Republic of",2009,76.753095905034897
-"Korea, Democratic People's Republic of",2010,74.665695375604898
-"Korea, Democratic People's Republic of",2011,75.813366942581297
-"Korea, Democratic People's Republic of",2012,72.428502706356895
-"Korea, Democratic People's Republic of",2013,76.471145372440304
-"Korea, Democratic People's Republic of",2014,75.263059506899793
-"Korea, Republic of",1961,619.561550516068
-"Korea, Republic of",1962,585.70007767813604
-"Korea, Republic of",1963,506.55392922001499
-"Korea, Republic of",1964,516.89409495017799
-"Korea, Republic of",1965,478.03093141297001
-"Korea, Republic of",1966,425.892612859005
-"Korea, Republic of",1967,385.56346435991702
-"Korea, Republic of",1968,342.07041141942602
-"Korea, Republic of",1969,305.90022176240097
-"Korea, Republic of",1970,291.08504399720903
-"Korea, Republic of",1971,257.02213819923998
-"Korea, Republic of",1972,245.85734745202501
-"Korea, Republic of",1973,211.507838425476
-"Korea, Republic of",1974,203.36314176160101
-"Korea, Republic of",1975,200.57764259518601
-"Korea, Republic of",1976,191.415102037499
-"Korea, Republic of",1977,176.034698217775
-"Korea, Republic of",1978,161.24496625543799
-"Korea, Republic of",1979,146.699876042081
-"Korea, Republic of",1980,146.589807279517
-"Korea, Republic of",1981,151.14482760433501
-"Korea, Republic of",1982,145.50136310185999
-"Korea, Republic of",1983,137.049932969206
-"Korea, Republic of",1984,138.27663856661499
-"Korea, Republic of",1985,129.97611207866501
-"Korea, Republic of",1986,126.31824916181399
-"Korea, Republic of",1987,117.18553939717199
-"Korea, Republic of",1988,113.09366475182399
-"Korea, Republic of",1989,99.421702644094495
-"Korea, Republic of",1990,84.243451208714802
-"Korea, Republic of",1991,74.777519389622896
-"Korea, Republic of",1992,73.118352865884404
-"Korea, Republic of",1993,67.273790884178595
-"Korea, Republic of",1994,62.747899451622999
-"Korea, Republic of",1995,59.276243264187201
-"Korea, Republic of",1996,57.855285029441497
-"Korea, Republic of",1997,55.725278280946704
-"Korea, Republic of",1998,72.389028171516102
-"Korea, Republic of",1999,60.227377463176403
-"Korea, Republic of",2000,55.4802557359533
-"Korea, Republic of",2001,54.207046713642001
-"Korea, Republic of",2002,50.641206397434601
-"Korea, Republic of",2003,49.292267194916001
-"Korea, Republic of",2004,49.906517988354302
-"Korea, Republic of",2005,48.449610261022201
-"Korea, Republic of",2006,46.4173727440931
-"Korea, Republic of",2007,44.701712281494203
-"Korea, Republic of",2008,45.542623931649203
-"Korea, Republic of",2009,47.986919615615498
-"Korea, Republic of",2010,43.0079789508925
-"Korea, Republic of",2011,41.868380036103098
-"Korea, Republic of",2012,41.765905520945303
-"Korea, Republic of",2013,42.641763774080502
-"Korea, Republic of",2014,43.052549611467398
+"year","country","overshoot_day","country_3_code"
+1961,"Cambodia",732.078096192774,"KHM"
+1962,"Cambodia",764.483390786057,"KHM"
+1963,"Cambodia",747.882113704898,"KHM"
+1964,"Cambodia",761.78580411591,"KHM"
+1965,"Cambodia",777.68809879797,"KHM"
+1966,"Cambodia",751.357637231961,"KHM"
+1967,"Cambodia",757.011184260173,"KHM"
+1968,"Cambodia",708.121184148125,"KHM"
+1969,"Cambodia",716.537869654689,"KHM"
+1970,"Cambodia",690.254173384047,"KHM"
+1971,"Cambodia",746.642169502734,"KHM"
+1972,"Cambodia",795.558609429847,"KHM"
+1973,"Cambodia",849.720606350612,"KHM"
+1974,"Cambodia",865.475799591325,"KHM"
+1975,"Cambodia",841.765544625253,"KHM"
+1976,"Cambodia",838.023898231594,"KHM"
+1977,"Cambodia",825.809654805736,"KHM"
+1978,"Cambodia",835.075922385967,"KHM"
+1979,"Cambodia",832.491706173574,"KHM"
+1980,"Cambodia",754.902577153354,"KHM"
+1981,"Cambodia",757.295189844927,"KHM"
+1982,"Cambodia",721.41125870601,"KHM"
+1983,"Cambodia",730.288484079506,"KHM"
+1984,"Cambodia",807.859646674629,"KHM"
+1985,"Cambodia",772.751695877426,"KHM"
+1986,"Cambodia",755.153676185461,"KHM"
+1987,"Cambodia",771.844632326172,"KHM"
+1988,"Cambodia",744.717557167221,"KHM"
+1989,"Cambodia",760.613905288038,"KHM"
+1990,"Cambodia",756.165914481169,"KHM"
+1991,"Cambodia",759.179344491868,"KHM"
+1992,"Cambodia",810.654362585076,"KHM"
+1993,"Cambodia",807.103972521825,"KHM"
+1994,"Cambodia",820.393289046377,"KHM"
+1995,"Cambodia",747.214400693764,"KHM"
+1996,"Cambodia",763.154705531383,"KHM"
+1997,"Cambodia",775.828697577,"KHM"
+1998,"Cambodia",767.192958747036,"KHM"
+1999,"Cambodia",728.771906269738,"KHM"
+2000,"Cambodia",757.814386693284,"KHM"
+2001,"Cambodia",739.715445134031,"KHM"
+2002,"Cambodia",745.265352602189,"KHM"
+2003,"Cambodia",696.854787865798,"KHM"
+2004,"Cambodia",708.455681718202,"KHM"
+2005,"Cambodia",631.695889229012,"KHM"
+2006,"Cambodia",610.862252397723,"KHM"
+2007,"Cambodia",582.07958124266,"KHM"
+2008,"Cambodia",580.260843988994,"KHM"
+2009,"Cambodia",558.584065372671,"KHM"
+2010,"Cambodia",533.572362881154,"KHM"
+2011,"Cambodia",495.165772824768,"KHM"
+2012,"Cambodia",468.731640131461,"KHM"
+2013,"Cambodia",474.132133912379,"KHM"
+2014,"Cambodia",465.882977942376,"KHM"
