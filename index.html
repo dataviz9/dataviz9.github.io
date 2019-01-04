@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8">
     <title>D3 Test</title>
+    <link href="./static/style.css" rel="stylesheet" type="text/css">
     <script src="https://d3js.org/d3.v4.min.js"></script>
 </head>
 
@@ -11,58 +12,7 @@
 
     <svg width=600 height=600></svg>
 
-    <script>
-        d3.csv("static/world.csv", function (data) {
-            var angle = 360 / (data.length - 1);
-            var svg = d3.select('svg');
-            var originX = 300;
-            var originY = 300;
-            var ratio = 2;
-            var circleRadius = 365 / ratio;
-            var midnight = originY - 365 / ratio;
-
-            var axeX = svg.append("line")
-                .attr("x1", 300)
-                .attr("y1", 0)
-                .attr("x2", 300)
-                .attr("y2", 600)
-                .attr("style", "stroke:black;stroke-width:2");
-
-            var circle = svg.append("circle")
-                .attr("cx", originX)
-                .attr("cy", originY)
-                .attr("r", circleRadius)
-                .attr("fill", "none")
-                .attr("stroke", "black");
-
-
-
-
-            svg.selectAll("circle")
-                .data(data)
-                .enter()
-                .append("circle")
-                .attr("r", 3)
-                .attr("cx", originX)
-                .attr("cy", function (d) {
-                    return originY - d.overshoot_day / ratio;
-                })
-                .attr("fill", "red")
-                .attr("transform", function (d, i) {
-                    return "rotate(" + (i * angle) + "," + originX + "," + originY + ")"
-                });
-
-            for (var i = 0; i < 12; i++) {
-                svg.append("circle")
-                    .attr("cx", originX)
-                    .attr("cy", originY)
-                    .attr("r", circleRadius / 12 * i)
-                    .attr("fill", "none")
-                    .attr("style", "stroke : black; stroke-width: 1; stroke-dasharray: 10, 5;");
-            }
-        });
-
-    </script>
+    <script src="static/js/clock.js" type="text/javascript"></script>
 </body>
 
 </html>

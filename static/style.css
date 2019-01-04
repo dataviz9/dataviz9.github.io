@@ -1,0 +1,20 @@
+
+.month-tick{
+    stroke-width:2;
+    stroke: black;
+}
+
+.axis-year{
+    stroke:black;
+    stroke-width:2;
+    opacity: 0.6;
+}
+
+.month-label{
+    text-anchor: middle;
+}
+
+.overshoot-arc{
+    stroke:red;
+    stroke-width: 3;
+}
