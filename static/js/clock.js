@@ -1,6 +1,9 @@
+// Used interpolation technique from : https://bl.ocks.org/mbostock/1346410
+
 let clock_cfg = {
     width: 600,
     height: 600,
+    innerCircle: 20,
     month: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 }
 
@@ -30,9 +33,11 @@ d3.csv("static/world.csv", data => {
         .attr("class", "clock-canvas")
 
 
+
+
     let yearScale = d3.scaleLinear()
         .domain(d3.extent(data, d => +d.year))
-        .range([0, circleRadius])
+        .range([clock_cfg.innerCircle, circleRadius])
         .nice()
 
     let monthScale = d3.scaleLinear()
@@ -47,15 +52,14 @@ d3.csv("static/world.csv", data => {
         .innerRadius(circleRadius + 5)
         .outerRadius(circleRadius + 25)
         .startAngle(d => {
-            return monthScale(d + 0.02);
+            return monthScale(d + 0.01);
         })
         .endAngle(d => {
-            return monthScale(d + 0.96);
+            return monthScale(d + 0.975);
         });
 
     let overshootArc = d3.arc()
         .innerRadius(d => {
-            console.log(d.year);
             return yearScale(d.year)
         })
         .outerRadius(d => {
@@ -63,6 +67,16 @@ d3.csv("static/world.csv", data => {
         })
         .startAngle(d => dayScale(Math.min(365, d.overshoot_day)))
         .endAngle(dayScale(365))
+
+    let elapsedArc = d3.arc()
+        .innerRadius(d => {
+            return yearScale(d.year)
+        })
+        .outerRadius(d => {
+            return yearScale(d.year)
+        })
+        .startAngle(dayScale(0))
+        .endAngle(d => dayScale(Math.min(365, d.overshoot_day)))
 
     svg.selectAll(".month-tick")
         .data(d3.range(0, 12)).enter()
@@ -82,10 +96,19 @@ d3.csv("static/world.csv", data => {
         .attr("y", (clock_cfg.height / 2 - circleRadius - 10))
         .text(d => d)
         .attr("class", "month-label")
-        .attr("transform", function (d, i) {
+        .attr("transform", (d, i) => {
             return "rotate(" + (monthScale(i + 0.5) * 180 / pi) + "," +
                 originX + "," + originY + ")"
         })
+
+    function arcTween(newAngle) {
+        return function (d) {
+            let interp = d3.interpolate({ year: d.year, overshoot_day: 0 }, d)
+            return t => {
+                return elapsedArc(interp(t));
+            };
+        }
+    }
 
     svg.selectAll(".overshoot-arc")
         .data(data).enter()
@@ -96,25 +119,65 @@ d3.csv("static/world.csv", data => {
         .attr("class", "overshoot-arc")
         .attr("transform",
             "translate(" + clock_cfg.width / 2 + "," +
-            clock_cfg.height / 2 + ")");
+            clock_cfg.height / 2 + ")")
+        .attr('pointer-events', 'visibleStroke')
+        .on("mouseover", (d, i) => {
+            // console.log(this)
+            // console.log(d3.select(this))
+            // .classed("hover", true)
+
+            let elapsed = svg.append("path")
+                .datum(d)
+                .attr("d", elapsedArc({ year: d.year, overshoot_day: 0 }))
+                .attr("id", "elapsed-arc")
+                .attr("transform",
+                    "translate(" + clock_cfg.width / 2 + "," +
+                    clock_cfg.height / 2 + ")")
+            elapsed.transition()
+                .ease(d3.easeBounce)
+                .delay(80)
+                .duration(500)
+                .attrTween("d", arcTween(d));
+            // svg.select("#elapsed-arc")
+            //     .transition()
+            //     .duration(200)
+            //     .endAngle()
+        })
+        .on("mouseout", d => {
+            // d3.select(this)
+            //     .classed("hover", false)
+            d3.select("#elapsed-arc").remove();
+        })
 
     var axisYear = svg.append("line")
         .attr("x1", originX)
         .attr("y1", 5)
         .attr("x2", originX)
         .attr("y2", clock_cfg.height - 5)
-        .attr("class", "axis-year")
+        .attr("class", "vline")
     // let center = svg.append("line")
     //     .attr("x1", originX - 5)
     //     .attr("y1", originY)
     //     .attr("x2", originX + 5)
     //     .attr("y2", originY)
     //     .attr("class", "axis-year")
-    
-    let yearAxis = d3.axisRight(yearScale).ticks([5],"f")
+
+
+
+
+    let innerCircle = svg.append("circle")
+        .attr("cx", originX)
+        .attr("cy", originY)
+        .attr("r", clock_cfg.innerCircle - 1)
+        .attr("class", "inner-circle")
+
+    let yearAxis = d3.axisRight(yearScale)
+        .ticks([5], "f")
+
     svg.append("g")
-    .attr("transform", "translate("+originX+","+originY +")")
-    .call(yearAxis);
+        .attr("class", "year-axis")
+        .attr("transform", "translate(" + originX + "," + originY + ")")
+        .call(yearAxis);
 
     // svg.selectAll("circle")
     //     .data(data).enter()

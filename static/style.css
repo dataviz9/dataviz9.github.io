@@ -11,17 +11,37 @@
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif
 }
 
-.axis-year{
-    stroke:black;
-    stroke-width:1;
-    /* opacity: 0.6; */
-    stroke-linecap: round
+.inner-circle{
+    fill:rgb(37, 77, 78);
+    stroke: rgb(40, 95, 81);
 }
 
+.vline{
+    stroke:white;
+    stroke-width:1;
+}
+
+.year-axis text{
+    fill: white;
+    color: white;
+    
+}
+.year-axis path,line{
+    stroke: white;
+}
 
 
 .overshoot-arc{
     stroke:rgb(255, 123, 0);
+    stroke-width: 3.6;
+}
+
+.overshoot-arc.hover{
+    stroke:rgb(192, 0, 0);
+}
+
+#elapsed-arc{
+    stroke:rgb(80, 185, 38);
     stroke-width: 3;
 }
 
