@@ -19,28 +19,21 @@ d3.csv("static/world.csv", data => {
     var originX = clock_cfg.width / 2;
     var originY = clock_cfg.height / 2;
     var ratio = 2;
-    var circleRadius = 200
+    var circleRadius = 250
 
-    var axisYear = svg.append("line")
-        .attr("x1", 0)
-        .attr("y1", originY)
-        .attr("x2", clock_cfg.width)
-        .attr("y2", originY)
-        .attr("class", "axis-year")
+
 
     let circle = svg.append("circle")
         .attr("cx", originX)
         .attr("cy", originY)
         .attr("r", circleRadius)
-        .attr("fill", "green")
-        .attr("stroke", "black");
+        .attr("class", "clock-canvas")
 
-    console.log(d3.extent(data, d => +d.year))
-    console.log(d3.max(data, d => +d.year))
 
     let yearScale = d3.scaleLinear()
         .domain(d3.extent(data, d => +d.year))
         .range([0, circleRadius])
+        .nice()
 
     let monthScale = d3.scaleLinear()
         .domain([0, 11 + 59 / 60])
@@ -51,13 +44,13 @@ d3.csv("static/world.csv", data => {
         .range([0, 2 * pi])
 
     let monthArc = d3.arc()
-        .innerRadius(circleRadius - 5)
-        .outerRadius(circleRadius + 5)
+        .innerRadius(circleRadius + 5)
+        .outerRadius(circleRadius + 25)
         .startAngle(d => {
-            return monthScale(d) - 0.01;
+            return monthScale(d + 0.02);
         })
         .endAngle(d => {
-            return monthScale(d);
+            return monthScale(d + 0.96);
         });
 
     let overshootArc = d3.arc()
@@ -68,7 +61,7 @@ d3.csv("static/world.csv", data => {
         .outerRadius(d => {
             return yearScale(d.year)
         })
-        .startAngle(d => dayScale(d.overshoot_day))
+        .startAngle(d => dayScale(Math.min(365, d.overshoot_day)))
         .endAngle(dayScale(365))
 
     svg.selectAll(".month-tick")
@@ -90,7 +83,7 @@ d3.csv("static/world.csv", data => {
         .text(d => d)
         .attr("class", "month-label")
         .attr("transform", function (d, i) {
-            return "rotate(" + (monthScale(i) * 180 / pi) + "," +
+            return "rotate(" + (monthScale(i + 0.5) * 180 / pi) + "," +
                 originX + "," + originY + ")"
         })
 
@@ -104,6 +97,24 @@ d3.csv("static/world.csv", data => {
         .attr("transform",
             "translate(" + clock_cfg.width / 2 + "," +
             clock_cfg.height / 2 + ")");
+
+    var axisYear = svg.append("line")
+        .attr("x1", originX)
+        .attr("y1", 5)
+        .attr("x2", originX)
+        .attr("y2", clock_cfg.height - 5)
+        .attr("class", "axis-year")
+    // let center = svg.append("line")
+    //     .attr("x1", originX - 5)
+    //     .attr("y1", originY)
+    //     .attr("x2", originX + 5)
+    //     .attr("y2", originY)
+    //     .attr("class", "axis-year")
+    
+    let yearAxis = d3.axisRight(yearScale).ticks([5],"f")
+    svg.append("g")
+    .attr("transform", "translate("+originX+","+originY +")")
+    .call(yearAxis);
 
     // svg.selectAll("circle")
     //     .data(data).enter()
