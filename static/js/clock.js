@@ -13,7 +13,7 @@ function init_clock(container) {
 
 }
 
-d3.csv("static/world.csv", data => {
+d3.csv("static/splitted_data/WORLD.csv", data => {
     let angle = 360 / (data.length - 1);
     var svg = d3.select('svg')
         .attr("width", clock_cfg.width)
