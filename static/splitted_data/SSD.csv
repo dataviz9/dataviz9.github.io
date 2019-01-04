@@ -1,1 +1,5 @@
-"year","country","overshoot_day","country_3_code"
+"country","year","overshoot_day","country_3_code","number.of.earth.required"
+"South Sudan",2011,373.546289456576,"SSD",0.9
+"South Sudan",2012,382.196585194816,"SSD",0.9
+"South Sudan",2013,389.883232063748,"SSD",0.9
+"South Sudan",2014,398.126216768509,"SSD",0.9
