@@ -1,203 +1,232 @@
 // Used interpolation technique from : https://bl.ocks.org/mbostock/1346410
 
-let clock_cfg = {
+let CLOCK = {
     width: 600,
     height: 600,
-    innerCircle: 20,
-    month: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+    innerCircle: 30,
+    margin: 50,
+    month: [
+        "January", "February", "March", "April", "May", "June", "July",
+        "August", "September", "October", "November", "December"
+    ],
+    yearStart: 1960,
+    yearEnd: 2015,
+    years: Array.from({ length: 2016 - 1960 },
+        (x, i) => i + 1960)
 }
 
-let pi = Math.PI
+let animQueue = d3.queue(1)
 
-function init_clock(container) {
+let svg = d3.select('#clock')
+    .attr("width", CLOCK.width)
+    .attr("height", CLOCK.height);
 
-}
+let originX = CLOCK.width / 2,
+    originY = CLOCK.height / 2,
+    circleRadius = Math.min(originX, originY) - CLOCK.margin
 
-d3.csv("static/splitted_data/WORLD.csv", data => {
-    let angle = 360 / (data.length - 1);
-    var svg = d3.select('svg')
-        .attr("width", clock_cfg.width)
-        .attr("height", clock_cfg.height);
+let circle = svg.append("circle")
+    .attr("cx", originX)
+    .attr("cy", originY)
+    .attr("r", circleRadius)
+    .attr("class", "clock-canvas")
 
-    var originX = clock_cfg.width / 2;
-    var originY = clock_cfg.height / 2;
-    var ratio = 2;
-    var circleRadius = 250
+svg.append("line")
+    .attr("x1", originX)
+    .attr("y1", 5)
+    .attr("x2", originX)
+    .attr("y2", CLOCK.height - 5)
+    .attr("class", "vline")
 
+let innerCircle = svg.append("circle")
+    .attr("cx", originX)
+    .attr("cy", originY)
+    .attr("r", CLOCK.innerCircle - 1)
+    .attr("class", "inner-circle")
 
+let dayMonthLabel = svg.append("text")
+    .attr('x', originX)
+    .attr("y", originY - 5)
+    .attr("class", "date-label day")
 
-    let circle = svg.append("circle")
-        .attr("cx", originX)
-        .attr("cy", originY)
-        .attr("r", circleRadius)
-        .attr("class", "clock-canvas")
+let dateLabel = svg.append("text")
+    .attr('x', originX)
+    .attr("y", originY + 15)
+    .attr("class", "date-label")
 
+let monthScale = d3.scaleLinear()
+    .domain([0, 11 + 59 / 60])
+    .range([0, 2 * Math.PI]);
 
+let dayScale = d3.scaleLinear()
+    .domain([0, 365])
+    .range([0, 2 * Math.PI])
 
+let monthArc = d3.arc()
+    .innerRadius(circleRadius + 5)
+    .outerRadius(circleRadius + 25)
+    .startAngle(d => monthScale(d + 0.01))
+    .endAngle(d => monthScale(d + 0.975))
 
-    let yearScale = d3.scaleLinear()
-        .domain(d3.extent(data, d => +d.year))
-        .range([clock_cfg.innerCircle, circleRadius])
-        .nice()
+svg.selectAll(".month-tick")
+    .data(d3.range(0, 12)).enter()
+    .append("svg:path")
+    .attr("d", d => monthArc(d))
+    .attr("class", "month-tick")
+    .attr("transform",
+        "translate(" + CLOCK.width / 2 + "," + CLOCK.height / 2 + ")");
 
-    let monthScale = d3.scaleLinear()
-        .domain([0, 11 + 59 / 60])
-        .range([0, 2 * pi]);
+svg.selectAll(".month-label")
+    .data(CLOCK.month).enter()
+    .append("text")
+    .attr("x", CLOCK.width / 2)
+    .attr("y", (CLOCK.height / 2 - circleRadius - 10))
+    .text(d => d)
+    .attr("class", "month-label")
+    .attr("transform", (d, i) => {
+        return "rotate(" + (monthScale(i + 0.5) * 180 / Math.PI) + "," +
+            originX + "," + originY + ")"
+    })
 
-    let dayScale = d3.scaleLinear()
-        .domain([0, 365])
-        .range([0, 2 * pi])
+let yearScale = d3.scaleLinear()
+    .domain([CLOCK.yearStart, CLOCK.yearEnd])//d3.extent(data, d => +d.year))
+    .range([CLOCK.innerCircle, circleRadius])
+    .nice()
 
-    let monthArc = d3.arc()
-        .innerRadius(circleRadius + 5)
-        .outerRadius(circleRadius + 25)
-        .startAngle(d => {
-            return monthScale(d + 0.01);
-        })
-        .endAngle(d => {
-            return monthScale(d + 0.975);
-        });
+let yearAxis = d3.axisRight(yearScale)
+    .ticks([5], "f")
 
-    let overshootArc = d3.arc()
-        .innerRadius(d => {
-            return yearScale(d.year)
-        })
-        .outerRadius(d => {
-            return yearScale(d.year)
-        })
-        .startAngle(d => dayScale(Math.min(365, d.overshoot_day)))
-        .endAngle(dayScale(365))
+let yearAxisElt = svg.append("g")
+    .attr("class", "year-axis")
+    .attr("transform", "translate(" + originX + "," + originY + ")")
+    .call(yearAxis)
+    .raise()
 
-    let elapsedArc = d3.arc()
-        .innerRadius(d => {
-            return yearScale(d.year)
-        })
-        .outerRadius(d => {
-            return yearScale(d.year)
-        })
-        .startAngle(dayScale(0))
-        .endAngle(d => dayScale(Math.min(365, d.overshoot_day)))
+let overshootArc = d3.arc()
+    .innerRadius(d => yearScale(+d.year))
+    .outerRadius(d => yearScale(+d.year))
+    .startAngle(d => dayScale(Math.min(365, +d.overshoot_day)))
+    .endAngle(dayScale(365))
 
-    svg.selectAll(".month-tick")
-        .data(d3.range(0, 12)).enter()
-        .append("svg:path")
-        .attr("d", d => {
-            return monthArc(d)
-        })
-        .attr("class", "month-tick")
-        .attr("transform",
-            "translate(" + clock_cfg.width / 2 + "," +
-            clock_cfg.height / 2 + ")");
+let elapsedArc = d3.arc()
+    .innerRadius(d => yearScale(d.year))
+    .outerRadius(d => yearScale(d.year))
+    .startAngle(dayScale(0))
+    .endAngle(d => dayScale(Math.min(365, d.overshoot_day)))
 
-    svg.selectAll(".month-label")
-        .data(clock_cfg.month).enter()
-        .append("text")
-        .attr("x", clock_cfg.width / 2)
-        .attr("y", (clock_cfg.height / 2 - circleRadius - 10))
-        .text(d => d)
-        .attr("class", "month-label")
-        .attr("transform", (d, i) => {
-            return "rotate(" + (monthScale(i + 0.5) * 180 / pi) + "," +
-                originX + "," + originY + ")"
-        })
-
-    function arcTween(newAngle) {
-        return function (d) {
-            let interp = d3.interpolate({ year: d.year, overshoot_day: 0 }, d)
-            return t => {
-                return elapsedArc(interp(t));
-            };
-        }
+function arcTween(arcFunction) {
+    return function (d) {
+        // console.log(this)
+        let prevDay = d3.select(this).attr("data-prev")
+        let interp = d3.interpolate({ year: +d.year, overshoot_day: +prevDay }, d)
+        return t => arcFunction(interp(t))
     }
+}
 
-    svg.selectAll(".overshoot-arc")
-        .data(data).enter()
-        .append("svg:path")
-        .attr("d", d => {
-            return overshootArc(d)
-        })
-        .attr("class", "overshoot-arc")
+console.log(CLOCK.years)
+
+let init_overshoot = Array.map(CLOCK.years, (v, i, _) => {
+    return {
+        year: +v,
+        overshoot_day: 365
+    }
+})
+
+let overshoots = svg.selectAll(".overshoot-arc")
+    .data(init_overshoot, d => d.year).enter()
+    .append("svg:path")
+    .attr("d", d => overshootArc(d))
+    .attr("class", "overshoot-arc")
+    .attr("data-prev", 365)
+    .attr("transform",
+        "translate(" + CLOCK.width / 2 + "," + CLOCK.height / 2 + ")")
+    .attr('pointer-events', 'visibleStroke')
+
+function highlight_arc(index) {
+    d3.selectAll(".overshoot-arc")
+        .filter((d, i) => index !== i)
+        .transition()
+        .duration(100)
+        .style("opacity", 0.5)
+}
+
+function overshoot_hover(d, i) {
+    highlight_arc(i)
+    let elapsed = svg.append("path")
+        .attr("data-prev", 0)
+        .datum(d)
+        .attr("d", elapsedArc({ year: d.year, overshoot_day: 0 }))
+        .attr("id", "elapsed-arc")
         .attr("transform",
-            "translate(" + clock_cfg.width / 2 + "," +
-            clock_cfg.height / 2 + ")")
-        .attr('pointer-events', 'visibleStroke')
-        .on("mouseover", (d, i) => {
-            // console.log(this)
-            // console.log(d3.select(this))
-            // .classed("hover", true)
+            "translate(" + CLOCK.width / 2 + "," + CLOCK.height / 2 + ")")
 
-            let elapsed = svg.append("path")
-                .datum(d)
-                .attr("d", elapsedArc({ year: d.year, overshoot_day: 0 }))
-                .attr("id", "elapsed-arc")
-                .attr("transform",
-                    "translate(" + clock_cfg.width / 2 + "," +
-                    clock_cfg.height / 2 + ")")
-            elapsed.transition()
-                .ease(d3.easeBounce)
-                .delay(80)
-                .duration(500)
-                .attrTween("d", arcTween(d));
-            // svg.select("#elapsed-arc")
-            //     .transition()
-            //     .duration(200)
-            //     .endAngle()
+    yearAxisElt.raise()
+
+    elapsed.transition()
+        // .ease(d3.easeBounce)
+        .delay(80)
+        .duration(500)
+        .attrTween("d", arcTween(elapsedArc))
+
+    let date = moment(d.year, 'YYYY').add(d.overshoot_day, "days")
+    dayMonthLabel.text(date.format("D MMM"))
+    dateLabel.text(date.format("YYYY"))
+}
+
+function overshoot_out() {
+    d3.select("#elapsed-arc").remove();
+
+    d3.selectAll(".overshoot-arc")
+        .transition()
+        .duration(100)
+        .style("opacity", 1)
+    dayMonthLabel.text("")
+    dateLabel.text("")
+}
+
+function setClockData(file) {
+    d3.select("#elapsed-arc").remove();
+    d3.selectAll(".overshoot-arc")
+        .on("mouseover", null)
+        .on("mouseout", null)
+    d3.csv(file, data => {
+        let years = new Set(Array.map(data, (v, i) => +v.year))
+        let missingYears = CLOCK.years.filter(y => !years.has(y))
+        // console.log(missingYears)
+        // console.log(data)
+        missingYears.forEach(
+            (v, i, _) => {
+                data.push({
+                    year: v,
+                    overshoot_day: 365
+                })
+            })
+        data.forEach((v, i, _) => {
+            v.year = +v.year
+            v.overshoot_day = +v.overshoot_day
         })
-        .on("mouseout", d => {
-            // d3.select(this)
-            //     .classed("hover", false)
-            d3.select("#elapsed-arc").remove();
-        })
 
-    var axisYear = svg.append("line")
-        .attr("x1", originX)
-        .attr("y1", 5)
-        .attr("x2", originX)
-        .attr("y2", clock_cfg.height - 5)
-        .attr("class", "vline")
-    // let center = svg.append("line")
-    //     .attr("x1", originX - 5)
-    //     .attr("y1", originY)
-    //     .attr("x2", originX + 5)
-    //     .attr("y2", originY)
-    //     .attr("class", "axis-year")
+        d3.selectAll(".overshoot-arc")
+            .data(data, d => +d.year)
+
+        d3.selectAll(".overshoot-arc")
+            .transition()
+            .duration(500)
+            .attrTween("d", arcTween(overshootArc))
+            .on("end", function () {
+                d3.selectAll(".overshoot-arc")
+                    .on("mouseover", overshoot_hover)
+                    .on("mouseout", overshoot_out)
+            })
+            .attr("data-prev", d => d.overshoot_day)
+    });
+}
 
 
+d3.select("select[name='country']")
+    .on("change", function () {
+        setClockData("static/splitted_data/" + this.value + ".csv")
+    })
 
+setClockData("static/splitted_data/" + d3.select("#country-select").property("value") + ".csv")
 
-    let innerCircle = svg.append("circle")
-        .attr("cx", originX)
-        .attr("cy", originY)
-        .attr("r", clock_cfg.innerCircle - 1)
-        .attr("class", "inner-circle")
-
-    let yearAxis = d3.axisRight(yearScale)
-        .ticks([5], "f")
-
-    svg.append("g")
-        .attr("class", "year-axis")
-        .attr("transform", "translate(" + originX + "," + originY + ")")
-        .call(yearAxis);
-
-    // svg.selectAll("circle")
-    //     .data(data).enter()
-    //     .append("circle")
-    //     .attr("r", 3)
-    //     .attr("cx", originX)
-    //     .attr("cy", d => yearScale(d.year))
-    //     .attr("fill", "red")
-    //     .attr("transform", (d, i) => {
-    //         return "rotate(" +
-    //             dayScale(Math.min(d.overshoot_day, 365)) * 180 / pi + "," +
-    //             originX + "," + originY + ")"
-    //     });
-
-    // for (var i = 0; i < 12; i++) {
-    //     svg.append("circle")
-    //         .attr("cx", originX)
-    //         .attr("cy", originY)
-    //         .attr("r", circleRadius / 12 * i)
-    //         .attr("fill", "none")
-    //         .attr("style", "stroke : black; stroke-width: 1; stroke-dasharray: 10, 5;");
-    // }
-});

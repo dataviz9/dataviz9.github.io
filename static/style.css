@@ -5,10 +5,37 @@
     fill: rgb(197, 197, 197);
 }
 
+.clock-ptr {
+    fill : orange;
+    font-size: 48px;
+    content: '\uf0d7';
+    font-family: FontAwesome;
+    text-anchor: middle;
+}
+/* .tick-green{
+    fill: greenyellow;
+}
+.tick-red{
+    fill: crimson;
+}
+.tick-overshoot{
+    fill: url(#svgGradient)
+} */
+
 .month-label{
     text-anchor: middle;
     color: white;
-    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif
+    font-family: 'Courier New', Courier, monospace
+}
+
+.date-label{
+    text-anchor: middle;
+    fill: orange;
+    font-family: 'Courier New', Courier, monospace'
+}
+
+.date-label.day{
+    font-size: 12px;
 }
 
 .inner-circle{
@@ -24,6 +51,7 @@
 .year-axis text{
     fill: white;
     color: white;
+    font-weight: bold;
     
 }
 .year-axis path,line{
@@ -33,7 +61,7 @@
 
 .overshoot-arc{
     stroke:rgb(255, 123, 0);
-    stroke-width: 3.6;
+    stroke-width: 4.4;
 }
 
 .overshoot-arc.hover{
@@ -41,8 +69,9 @@
 }
 
 #elapsed-arc{
-    stroke:rgb(80, 185, 38);
-    stroke-width: 3;
+    /* stroke:rgb(80, 185, 38); */
+    stroke: limegreen;
+    stroke-width: 4;
 }
 
 .clock-canvas{
