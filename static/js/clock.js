@@ -15,14 +15,15 @@ let CLOCK = {
         (x, i) => i + 1960)
 }
 
-d3.csv("static/countries.csv", function(error, data) {
+d3.csv("static/countries.csv", function (error, data) {
     var dropdown = d3.select("#country-select")
-      data.forEach( function(v, i, _) {
-      dropdown.append("option")
-        .attr("value", v.code)
-        .text(v.country);
-      })
-  });
+    data.sort((a,b) => a.country.localeCompare(b.country))
+    data.forEach(function (v, i, _) {
+        dropdown.append("option")
+            .attr("value", v.code)
+            .text(v.country);
+    })
+});
 
 let svg = d3.select('#clock')
     .attr("width", CLOCK.width)
