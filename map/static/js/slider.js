@@ -1,4 +1,4 @@
-/* global d3 queue ready */
+/* global d3 queue */
 
 // Slider
 queue()
@@ -19,12 +19,18 @@ function slide (error, json) {
     return new Date(firstYear + d, 10, 3)
   })
 
+  var sliderScale = d3.scaleLinear()
+    .domain([firstYear, lastYear + 1])
+    .range([0, 750])
+
+  console.log(sliderScale(lastYear + 1))
+
   let sliderTime = d3
     .sliderBottom()
     .min(d3.min(dataTime))
     .max(d3.max(dataTime))
     .step(1000 * 60 * 60 * 24 * 365)
-    .width(800)
+    .width(sliderScale(lastYear + 1))
     .tickFormat(d3.timeFormat('%Y'))
     .tickValues(ticks)
     .default(new Date(1996, 10, 3))
@@ -40,10 +46,10 @@ function slide (error, json) {
   let gTime = d3
     .select('div#slider-time')
     .append('svg')
-    .attr('width', 1000)
+    .attr('width', 800)
     .attr('height', 100)
     .append('g')
-    .attr('transform', 'translate(25,10)')
+    .attr('transform', 'translate(20,10)')
 
   gTime.call(sliderTime)
 
