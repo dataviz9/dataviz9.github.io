@@ -15,6 +15,10 @@ function slide (error, json) {
     return new Date(firstYear + d, 10, 3)
   })
 
+  let ticks = d3.range(0, nbOfYears + 1, 5).map(function (d) {
+    return new Date(firstYear + d, 10, 3)
+  })
+
   let sliderTime = d3
     .sliderBottom()
     .min(d3.min(dataTime))
@@ -22,7 +26,7 @@ function slide (error, json) {
     .step(1000 * 60 * 60 * 24 * 365)
     .width(800)
     .tickFormat(d3.timeFormat('%Y'))
-    .tickValues(dataTime)
+    .tickValues(ticks)
     .default(new Date(1996, 10, 3))
     .on('onchange', val => {
       let year = val.getFullYear()

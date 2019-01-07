@@ -8,7 +8,7 @@ let tip = d3.tip()
   .direction('s')
   .offset([15, 0])
   .html(function (d) {
-    return "<strong>Country: </strong><span class='details'>" + d.properties.name + '<br></span>' + "<strong>footprint: </strong><span class='details'>" + format(d.footprint) + '</span>'
+    return "<strong>Country: </strong><span class='details'>" + d.properties.name + '<br></span>' + "<strong>Footprint: </strong><span class='details'>" + format(d.footprint) + '</span>'
   })
 
 let margin = { top: 0, right: 0, bottom: 0, left: 0 }
