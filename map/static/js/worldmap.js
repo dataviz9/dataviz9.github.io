@@ -19,9 +19,10 @@ let height = 500 - margin.top - margin.bottom
 //   .range(['rgb(247,251,255)', 'rgb(222,235,247)', 'rgb(198,219,239)', 'rgb(158,202,225)', 'rgb(107,174,214)', 'rgb(66,146,198)', 'rgb(33,113,181)', 'rgb(8,81,156)', 'rgb(8,48,107)', 'rgb(3,19,43)'])
 
 let color = d3.scaleThreshold()
-  .domain([0, 100000, 500000, 1000000, 5000000, 10000000, 50000000, 100000000, 1000000000, 2500000000, 5000000000])
+  // .domain([100000, 500000, 1000000, 5000000, 10000000, 50000000, 100000000, 1000000000, 2500000000, 5000000000])
+  .domain([0.5, 1, 2, 3, 5, 7, 8, 10, 12, 14])
   // .range(['rgb(247,251,255)', 'rgb(222,235,247)', 'rgb(198,219,239)', 'rgb(158,202,225)', 'rgb(107,174,214)', 'rgb(66,146,198)', 'rgb(33,113,181)', 'rgb(8,81,156)', 'rgb(8,48,107)', 'rgb(3,19,43)'])
-  .range(['white', '#00ff00', '#27ff01', '#73ff01', '#c0ff02', '#eef302', '#ffd301', '#ffa801', '#ff5306', '#ff270a', '#ff0200'])
+  .range(['#00ff00', '#27ff01', '#73ff01', '#c0ff02', '#eef302', '#ffd301', '#ffa801', '#ff5306', '#ff270a', '#ff0200'])
   // .range(['green', 'black'])
 let svg = d3.select('body')
   .append('svg')
@@ -60,7 +61,6 @@ function ready (error, data, footprint) {
     .attr('d', path)
     .attr('class', 'kanar')
     .attr('fill', function (d) {
-      console.log(d.footprint)
       if (d.footprint === undefined) {
         return 'grey'
       } else {
@@ -113,6 +113,12 @@ function updateWorld (error, year) {
 
     d3.selectAll('.kanar')
       .data(updated, d => d.id)
-      .attr('fill', d => { return color(d.footprint) })
+      .attr('fill', function (d) {
+        if (d.footprint === undefined) {
+          return 'grey'
+        } else {
+          return color(d.footprint)
+        }
+      })
   })
 }
