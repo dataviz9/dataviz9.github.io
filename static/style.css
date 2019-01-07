@@ -65,8 +65,9 @@
 }
 
 .extra.arc{
-    stroke:rgb(0, 195, 255, 0.5);
+    stroke:rgb(0, 195, 255);
     stroke-width: 4.4;
+    opacity: 0.5
 }
 
 

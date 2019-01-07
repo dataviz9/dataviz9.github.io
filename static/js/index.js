@@ -1,3 +1,12 @@
+function UrlExists(url) {
+    var http = new XMLHttpRequest();
+    http.open('HEAD', url, false);
+    http.send();
+    return http.status != 404;
+}
+
+
+
 let CLOCK = {
     width: 600,
     height: 600,
@@ -16,20 +25,35 @@ let CLOCK = {
 
 let clock = init_clock(CLOCK)
 
+
 d3.csv("static/countries.csv", function (error, data) {
     var dropdown = d3.select("#country-select")
+    dropdown.append("option")
+                        .attr("value", "WORLD")
+                        .text("World");
     data.sort((a, b) => a.country.localeCompare(b.country))
     data.forEach(function (v, i, _) {
-        dropdown.append("option")
-            .attr("value", v.code)
-            .text(v.country);
+        fetch("static/splitted_data/" + v.code + ".csv",
+            { method: 'HEAD', })
+            .then(function (resp) {
+                if (v.code !== "WORLD")
+                    dropdown.append("option")
+                        .attr("value", v.code)
+                        .text(v.country);
+            })
     })
-});
 
-d3.select("select[name='country']")
-    .on("change", function () {
+
+    // console.log(dropdown.property("value"))
+    update(clock, "static/splitted_data/WORLD.csv")
+    dropdown.on("change", function () {
         update(clock, "static/splitted_data/" + this.value + ".csv")
     })
 
-update(clock, "static/splitted_data/" + d3.select("#country-select").property("value") + ".csv")
+    d3.select("#country-select").property("value", "WORLD")
+})
+
+
+
+
 

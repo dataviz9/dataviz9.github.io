@@ -57,7 +57,7 @@ function init_clock(settings) {
             .attr("cy", clock.originY)
             .attr("r", clock.radius)
             .attr("class", "clock-canvas"),
-            line: clock.svg.append("line")
+        line: clock.svg.append("line")
             .attr("x1", clock.originX)
             .attr("y1", 5)
             .attr("x2", clock.originX)
@@ -142,16 +142,26 @@ function arcTween(arcFunction) {
     }
 }
 
-function highlight_arc(index) {
-    d3.selectAll(".overshoot.arc")
+function highlight_arc(index, klass, opacity) {
+    d3.selectAll(klass)
         .filter((d, i) => index !== i)
         .transition()
         .duration(100)
-        .style("opacity", 0.5)
+        .style("opacity", opacity)
 }
+
+function extra_hover(clock) {
+    return function (d, i) {
+        highlight_arc(i, ".extra.arc", 0.25)
+        let date = moment(d.year, 'YYYY').add(d.overshoot_day, "days")
+        clock.dateLabel.dayMonth.text("Year")
+        clock.dateLabel.year.text(date.format("YYYY"))
+    }
+}
+
 function overshoot_hover(clock) {
     return function (d, i) {
-        highlight_arc(i)
+        highlight_arc(i, ".overshoot.arc", 0.5)
         let elapsed = clock.svg.append("path")
             .attr("data-prev", 0)
             .datum(d)
@@ -174,10 +184,10 @@ function overshoot_hover(clock) {
     }
 }
 
-function overshoot_out(clock) {
+function overshoot_out(clock, klass) {
     return function () {
         d3.select("#elapsed-arc").remove();
-        d3.selectAll(".arc")
+        d3.selectAll(klass)
             .transition()
             .duration(100)
             .style("opacity", 1)
@@ -187,7 +197,7 @@ function overshoot_out(clock) {
 }
 
 function update(clock, file) {
-    d3.select(clock.elapsed).remove();
+    d3.select("#elapsed-arc").remove();
     d3.selectAll(".arc")
         .on("mouseover", null)
         .on("mouseout", null)
@@ -222,12 +232,17 @@ function update(clock, file) {
             })
             .attrTween("d", function (d) {
                 // console.log(this)
-                return (d.overshoot_day <= 365) ? arcTween(clock.arcs.overshoot).bind(this)(d) : arcTween(clock.arcs.extra).bind(this)(d)
+                return (d.overshoot_day <= 365) ?
+                    arcTween(clock.arcs.overshoot).bind(this)(d) :
+                    arcTween(clock.arcs.extra).bind(this)(d)
             })
             .on("end", function () {
                 d3.selectAll(".overshoot.arc")
                     .on("mouseover", overshoot_hover(clock))
-                    .on("mouseout", overshoot_out(clock))
+                    .on("mouseout", overshoot_out(clock, ".overshoot.arc"))
+                d3.selectAll(".extra.arc")
+                    .on("mouseover", extra_hover(clock))
+                    .on("mouseout", overshoot_out(clock, ".extra.arc"))
             })
             .attr("data-prev", d => d.overshoot_day)
     });
