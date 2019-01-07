@@ -14,10 +14,15 @@ let margin = { top: 0, right: 0, bottom: 0, left: 0 }
 let width = 960 - margin.left - margin.right
 let height = 500 - margin.top - margin.bottom
 
-let color = d3.scaleThreshold()
-  .domain([10000, 100000, 500000, 1000000, 5000000, 10000000, 50000000, 100000000, 500000000, 1500000000])
-  .range(['rgb(247,251,255)', 'rgb(222,235,247)', 'rgb(198,219,239)', 'rgb(158,202,225)', 'rgb(107,174,214)', 'rgb(66,146,198)', 'rgb(33,113,181)', 'rgb(8,81,156)', 'rgb(8,48,107)', 'rgb(3,19,43)'])
+// let color = d3.scaleThreshold()
+//   .domain([10000, 100000, 500000, 1000000, 5000000, 10000000, 50000000, 100000000, 500000000, 1500000000])
+//   .range(['rgb(247,251,255)', 'rgb(222,235,247)', 'rgb(198,219,239)', 'rgb(158,202,225)', 'rgb(107,174,214)', 'rgb(66,146,198)', 'rgb(33,113,181)', 'rgb(8,81,156)', 'rgb(8,48,107)', 'rgb(3,19,43)'])
 
+let color = d3.scaleThreshold()
+  .domain([0, 100000, 500000, 1000000, 5000000, 10000000, 50000000, 100000000, 1000000000, 2500000000, 5000000000])
+  // .range(['rgb(247,251,255)', 'rgb(222,235,247)', 'rgb(198,219,239)', 'rgb(158,202,225)', 'rgb(107,174,214)', 'rgb(66,146,198)', 'rgb(33,113,181)', 'rgb(8,81,156)', 'rgb(8,48,107)', 'rgb(3,19,43)'])
+  .range(['white', '#00ff00', '#27ff01', '#73ff01', '#c0ff02', '#eef302', '#ffd301', '#ffa801', '#ff5306', '#ff270a', '#ff0200'])
+  // .range(['green', 'black'])
 let svg = d3.select('body')
   .append('svg')
   .attr('width', width)
@@ -54,7 +59,14 @@ function ready (error, data, footprint) {
     .enter().append('path')
     .attr('d', path)
     .attr('class', 'kanar')
-    .attr('fill', function (d) { return color(d.footprint) })
+    .attr('fill', function (d) {
+      console.log(d.footprint)
+      if (d.footprint === undefined) {
+        return 'grey'
+      } else {
+        return color(d.footprint)
+      }
+    })
     .style('stroke', 'white')
     .style('stroke-width', 1.5)
     .style('opacity', 0.8)
