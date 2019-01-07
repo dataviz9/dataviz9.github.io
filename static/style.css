@@ -59,14 +59,16 @@
 }
 
 
-.overshoot-arc{
+.overshoot.arc{
     stroke:rgb(255, 123, 0);
     stroke-width: 4.4;
 }
 
-.overshoot-arc.hover{
-    stroke:rgb(192, 0, 0);
+.extra.arc{
+    stroke:rgb(0, 195, 255, 0.5);
+    stroke-width: 4.4;
 }
+
 
 #elapsed-arc{
     /* stroke:rgb(80, 185, 38); */
