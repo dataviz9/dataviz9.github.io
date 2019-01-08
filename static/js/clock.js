@@ -113,7 +113,7 @@ function init_clock(settings) {
         .call(yearAxis)
         .raise()
 
-    let init_overshoot = Array.map(clock.years, (v, i, _) => {
+    let init_overshoot = clock.years.map((v, i, _) => {
         return {
             year: +v,
             overshoot_day: 365
