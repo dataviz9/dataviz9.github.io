@@ -1,12 +1,3 @@
-function UrlExists(url) {
-    var http = new XMLHttpRequest();
-    http.open('HEAD', url, false);
-    http.send();
-    return http.status != 404;
-}
-
-
-
 let CLOCK = {
     width: 600,
     height: 600,
@@ -29,18 +20,18 @@ let clock = init_clock(CLOCK)
 d3.csv("static/countries.csv", function (error, data) {
     var dropdown = d3.select("#country-select")
     dropdown.append("option")
-                        .attr("value", "WORLD")
-                        .text("World");
+        .attr("value", "WORLD")
+        .text("World");
     data.sort((a, b) => a.country.localeCompare(b.country))
     data.forEach(function (v, i, _) {
-        fetch("static/splitted_data/" + v.code + ".csv",
-            { method: 'HEAD', })
-            .then(function (resp) {
-                if (v.code !== "WORLD")
-                    dropdown.append("option")
-                        .attr("value", v.code)
-                        .text(v.country);
-            })
+        // fetch("static/splitted_data/" + v.code + ".csv",
+        //     { method: 'HEAD', })
+        //     .then(function (resp) {
+        if (v.code !== "WORLD")
+            dropdown.append("option")
+                .attr("value", v.code)
+                .text(v.country);
+        // })
     })
 
 

@@ -203,7 +203,7 @@ function update(clock, file) {
         .on("mouseout", null)
 
     d3.csv(file, data => {
-        let years = new Set(Array.map(data, (v, i) => +v.year))
+        let years = new Set(data.map((v, i) => +v.year))
         let missingYears = clock.years.filter(y => !years.has(y))
         // console.log(missingYears)
         // console.log(data)
