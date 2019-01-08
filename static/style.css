@@ -67,11 +67,11 @@
 .extra.arc{
     stroke:rgb(0, 195, 255);
     stroke-width: 4.4;
-    opacity: 0.5
+    opacity: 0.7
 }
 
 .current.arc{
-    stroke: rgb(153, 0, 153);
+    stroke: rgb(119, 0, 119);
 }
 
 #elapsed-arc{
