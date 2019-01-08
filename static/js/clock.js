@@ -209,12 +209,7 @@ function overshoot_out(clock, klass) {
 function update_current(clock) {
     return d => {
         clock.current = d
-        d3.selectAll(".arc")
-            .classed("current", d => {
-                console.log(d.year === clock.current.year)
-                return d.year === clock.current.year ? true : false
-            })
-
+        d3.selectAll(".arc").classed("current", d => d.year === clock.current.year)
         set_date(clock)(d)
     }
 }
@@ -240,7 +235,7 @@ function update(clock, file) {
             let current = data.filter(d => d.year === Math.max(...years))[0]
             update(current)
         } else {
-            let d = data.filter(d => d.year === clock.current_year)[0]
+            let d = data.filter(d => d.year === clock.current.year)[0]
             let current = d.length === 0 ? { year: null } : d
             update(current)
         }
