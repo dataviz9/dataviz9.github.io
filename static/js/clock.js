@@ -120,7 +120,7 @@ function init_clock(settings) {
         }
     })
 
-    clock.overshoots = clock.svg.selectAll("arc")
+    clock.overshoots = clock.svg.selectAll(".arc")
         .data(init_overshoot, d => d.year).enter()
         .append("svg:path")
         .attr("d", d => clock.arcs.overshoot(d))
@@ -130,7 +130,19 @@ function init_clock(settings) {
             "translate(" + clock.originX + "," + clock.originY + ")")
         .attr('pointer-events', 'visibleStroke')
 
+    clock.current = { year: null }
+
     return clock
+}
+
+function set_date(clock) {
+    return d => {
+        let date = moment(d.year, 'YYYY').add(d.overshoot_day, "days")
+        d.overshoot_day <= 365 ?
+            clock.dateLabel.dayMonth.text(date.format("D MMM")) :
+            clock.dateLabel.dayMonth.text("Year")
+        clock.dateLabel.year.text(date.format("YYYY"))
+    }
 }
 
 function arcTween(arcFunction) {
@@ -153,9 +165,7 @@ function highlight_arc(index, klass, opacity) {
 function extra_hover(clock) {
     return function (d, i) {
         highlight_arc(i, ".extra.arc", 0.25)
-        let date = moment(d.year, 'YYYY').add(d.overshoot_day, "days")
-        clock.dateLabel.dayMonth.text("Year")
-        clock.dateLabel.year.text(date.format("YYYY"))
+        set_date(clock)(d)
     }
 }
 
@@ -178,9 +188,10 @@ function overshoot_hover(clock) {
             .duration(500)
             .attrTween("d", arcTween(clock.arcs.elapsed))
 
-        let date = moment(d.year, 'YYYY').add(d.overshoot_day, "days")
-        clock.dateLabel.dayMonth.text(date.format("D MMM"))
-        clock.dateLabel.year.text(date.format("YYYY"))
+        set_date(clock)(d)
+        // let date = moment(d.year, 'YYYY').add(d.overshoot_day, "days")
+        // clock.dateLabel.dayMonth.text(date.format("D MMM"))
+        // clock.dateLabel.year.text(date.format("YYYY"))
     }
 }
 
@@ -191,8 +202,20 @@ function overshoot_out(clock, klass) {
             .transition()
             .duration(100)
             .style("opacity", 1)
-        clock.dateLabel.dayMonth.text("")
-        clock.dateLabel.year.text("")
+        set_date(clock)(clock.current)
+    }
+}
+
+function update_current(clock) {
+    return d => {
+        clock.current = d
+        d3.selectAll(".arc")
+            .classed("current", d => {
+                console.log(d.year === clock.current.year)
+                return d.year === clock.current.year ? true : false
+            })
+
+        set_date(clock)(d)
     }
 }
 
@@ -207,6 +230,21 @@ function update(clock, file) {
         let missingYears = clock.years.filter(y => !years.has(y))
         // console.log(missingYears)
         // console.log(data)
+        data.forEach((v, i, _) => {
+            v.year = +v.year
+            v.overshoot_day = +v.overshoot_day
+        })
+
+        let update = update_current(clock)
+        if (clock.current.year === null) {
+            let current = data.filter(d => d.year === Math.max(...years))[0]
+            update(current)
+        } else {
+            let d = data.filter(d => d.year === clock.current_year)[0]
+            let current = d.length === 0 ? { year: null } : d
+            update(current)
+        }
+
         missingYears.forEach(
             (v, i, _) => {
                 data.push({
@@ -215,20 +253,16 @@ function update(clock, file) {
                 })
             })
 
-        data.forEach((v, i, _) => {
-            v.year = +v.year
-            v.overshoot_day = +v.overshoot_day
-        })
+
 
         d3.selectAll(".arc")
             .data(data, d => +d.year)
-
-        d3.selectAll(".arc")
-
             .transition()
             .duration(500)
             .attr("class", d => {
-                return (d.overshoot_day <= 365) ? "overshoot arc" : "extra arc"
+                let klass = (d.overshoot_day <= 365) ? "overshoot arc" : "extra arc"
+                klass += d.year === clock.current.year ? " current" : ""
+                return klass
             })
             .attrTween("d", function (d) {
                 // console.log(this)
@@ -240,9 +274,11 @@ function update(clock, file) {
                 d3.selectAll(".overshoot.arc")
                     .on("mouseover", overshoot_hover(clock))
                     .on("mouseout", overshoot_out(clock, ".overshoot.arc"))
+                    .on("click", update_current(clock))
                 d3.selectAll(".extra.arc")
                     .on("mouseover", extra_hover(clock))
                     .on("mouseout", overshoot_out(clock, ".extra.arc"))
+                    .on("click", update_current(clock))
             })
             .attr("data-prev", d => d.overshoot_day)
     });

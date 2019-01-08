@@ -60,7 +60,7 @@
 
 
 .overshoot.arc{
-    stroke:rgb(255, 123, 0);
+    stroke:rgb(241, 143, 14);
     stroke-width: 4.4;
 }
 
@@ -70,6 +70,9 @@
     opacity: 0.5
 }
 
+.current.arc{
+    stroke: rgb(153, 0, 153);
+}
 
 #elapsed-arc{
     /* stroke:rgb(80, 185, 38); */
