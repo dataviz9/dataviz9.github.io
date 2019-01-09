@@ -53,8 +53,8 @@ function init_clock(settings) {
             .attr("cx", clock.originX)
             .attr("cy", clock.originY)
             .attr("r", clock.radius)
-            .attr("class", "clock-canvas")
-            .style("filter", "url(#glow)"),
+            .attr("class", "clock-canvas"),
+            // .style("filter", "url(#glow)"),
         line: clock.svg.append("line")
             .attr("x1", clock.originX)
             .attr("y1", 5)
