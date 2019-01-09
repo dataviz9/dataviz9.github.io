@@ -63,7 +63,8 @@
     stroke-width: 4.4;
 } */
 .overshoot.arc{
-    stroke:rgb(252, 133, 64);
+    stroke:#ffa801; 
+    /* rgb(252, 133, 64); */
 }
 
 .extra.arc{
@@ -72,7 +73,8 @@
 }
 
 .current.arc{
-    stroke: rgb(119, 0, 119);
+    /* stroke: #770077; */
+    stroke :#a100a1; 
 }
 
 #elapsed-arc{
