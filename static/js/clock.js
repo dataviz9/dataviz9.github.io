@@ -275,13 +275,16 @@ function update(clock, file, callback) {
 
         d3.selectAll(".arc")
             .data(data, d => +d.year)
+            .classed("overshoot", d => d.overshoot_day <= 365)
+            .classed("extra", d => d.overshoot_day > 365)
+            .classed("current", d => d.year === clock.current.year)
             .transition()
             .duration(500)
-            .attr("class", d => {
-                let klass = (d.overshoot_day <= 365) ? "overshoot arc" : "extra arc"
-                klass += d.year === clock.current.year ? " current" : ""
-                return klass
-            })
+            // .attr("class", d => {
+            //     let klass = (d.overshoot_day <= 365) ? "overshoot arc" : "extra arc"
+            //     klass += d.year === clock.current.year ? " current" : ""
+            //     return klass
+            // })
             .style("opacity", "")
             .attrTween("d", function (d) {
                 return (d.overshoot_day <= 365) ?
