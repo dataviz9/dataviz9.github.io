@@ -75,6 +75,19 @@ let slider = d3.queue()
             //     update(current)
             // }
         })
+        slider.on("end", function () {
+            d3.selectAll(".arc")
+                .transition()
+                .delay(80)
+                .duration(500)
+                .style("opacity", function (d) {
+                    if (d === clock.current) {
+                        return ''
+                    } else {
+                        return d3.select(this).classed("overshoot") ? 1 : 0.7
+                    }
+                })
+        })
         clock.overshoots.on('click', d => slider.value(moment(d.year, "YYYY")))
     })
 

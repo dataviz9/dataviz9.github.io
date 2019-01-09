@@ -224,18 +224,23 @@ function overshoot_out(clock) {
 
 function update_current(clock) {
     return function (d) {
+        let klass = d.overshoot_day < 365 ? "overshoot" : "extra"
+
         clock.current = d
+
         d3.selectAll(".arc")
             .classed("current", d => d.year === clock.current.year)
-            .style("opacity", function (d) {
-                if (d === clock.current) {
-                    return ''
-                } else {
-                    return d3.select(this).classed("overshoot") ? 0.5 : 0.25
-                }
-            })
             .style("filter", function (d) {
                 return d === clock.current ? "url(#glow)" : ""
+            })
+
+        d3.selectAll("." + klass)
+            .style("opacity", function (d) {
+                if (d === clock.current) {
+                    return ""
+                } else {
+                    return klass === "overshoot" ? 0.5 : 0.25
+                }
             })
         set_date(clock)(d)
     }
@@ -285,6 +290,7 @@ function update(clock, file, callback) {
             //     klass += d.year === clock.current.year ? " current" : ""
             //     return klass
             // })
+
             .style("opacity", "")
             .attrTween("d", function (d) {
                 return (d.overshoot_day <= 365) ?
