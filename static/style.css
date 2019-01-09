@@ -5,13 +5,6 @@
     fill: rgb(197, 197, 197);
 }
 
-.clock-ptr {
-    fill : orange;
-    font-size: 48px;
-    content: '\uf0d7';
-    font-family: FontAwesome;
-    text-anchor: middle;
-}
 /* .tick-green{
     fill: greenyellow;
 }
@@ -25,7 +18,8 @@
 .month-label{
     text-anchor: middle;
     color: white;
-    font-family: 'Courier New', Courier, monospace
+    font-family: 'Courier New', Courier, monospace;
+    pointer-events: none;
 }
 
 .date-label{
@@ -33,6 +27,7 @@
     fill: orange;
     font-family: 'Courier New', Courier, monospace;
     font-weight: bold;
+    pointer-events: none;
 }
 
 .date-label.day{
@@ -53,6 +48,7 @@
     fill: white;
     color: white;
     font-weight: bold;
+    pointer-events: none;
     
 }
 .year-axis path, .year-axis line{
@@ -75,6 +71,7 @@
 .current.arc{
     /* stroke: #770077; */
     stroke :#a100a1; 
+    filter: url(#glow);
 }
 
 #elapsed-arc{

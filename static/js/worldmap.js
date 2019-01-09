@@ -47,8 +47,8 @@ function initWorldmap(mapJson) {
     .attr('d', worldmap.geopath)
     .attr('class', 'country-footprint')
     // .style('opacity', 0.8)
-    .style('stroke', 'white')
-    .style('stroke-width', 0.3)
+    .style('stroke', 'grey')
+    .style('stroke-width', 0.5)
     .on('mouseover', function (d) {
       tip.show(d)
       highlight_country(this, true)
@@ -80,8 +80,8 @@ function highlight_country(path, highlight = true) {
     .transition()
     .duration(300)
     // .style('opacity', d => highlight === true ? 1 : 1)
-    .style('stroke', d => highlight === true ? "purple" : 'white')
-    .style('stroke-width', d => highlight === true ? 1.5 : 0.3)
+    .style('stroke', d => highlight === true ? "purple" : 'grey')
+    .style('stroke-width', d => highlight === true ? 1.5 : 0.5)
     .style("filter", d => highlight===true ? "url(#glow)" : "")
 }
 

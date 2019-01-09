@@ -54,9 +54,9 @@ let slider = d3.queue()
             highlight_country(worldmap.highlighted, false)
             update(clock, "static/splitted_data/" + d.id + ".csv")
             worldmap.highlighted = this
+            d3.select("#country-select").property("value", d.id)
         })
         worldmap.canvas.on("dblclick", d => {
-            console.log(d);
             update(clock, "static/splitted_data/WORLD.csv")
         })
         let slider = slide(footprints, function (val) {
@@ -65,15 +65,6 @@ let slider = d3.queue()
             let datum = clock.overshoots
                 .select(d => d.year === year ? this : null).datum()
             update_current(clock)(datum)
-            // let update = update_current(clock)
-            // if (clock.current.year === null) {
-            //     let current = data.filter(d => d.year === Math.max(...years))[0]
-            //     update(current)
-            // } else {
-            //     let d = data.filter(d => d.year === clock.current.year)[0]
-            //     let current = d === undefined ? { year: Math.max(...years) } : d
-            //     update(current)
-            // }
         })
         slider.on("end", function () {
             d3.selectAll(".arc")
