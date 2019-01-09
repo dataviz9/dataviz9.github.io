@@ -54,7 +54,7 @@
     font-weight: bold;
     
 }
-.year-axis path,line{
+.year-axis path, .year-axis line{
     stroke: white;
 }
 

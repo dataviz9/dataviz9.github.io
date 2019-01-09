@@ -259,8 +259,6 @@ function update(clock, file) {
                 })
             })
 
-
-
         d3.selectAll(".arc")
             .data(data, d => +d.year)
             .transition()
@@ -270,8 +268,8 @@ function update(clock, file) {
                 klass += d.year === clock.current.year ? " current" : ""
                 return klass
             })
+            .style("opacity", "")
             .attrTween("d", function (d) {
-                // console.log(this)
                 return (d.overshoot_day <= 365) ?
                     arcTween(clock.arcs.overshoot).bind(this)(d) :
                     arcTween(clock.arcs.extra).bind(this)(d)

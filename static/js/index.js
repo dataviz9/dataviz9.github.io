@@ -44,6 +44,18 @@ d3.csv("static/countries.csv", function (error, data) {
     d3.select("#country-select").property("value", "WORLD")
 })
 
+let slider = d3.queue()
+    .defer(d3.json, 'static/footprint.json')
+    .await(slide)
+
+    
+d3.queue()
+    .defer(d3.json, 'static/world_countries.json')
+    .defer(d3.csv, 'static/footprintByYear/2014.csv')
+    .await(ready)
+
+
+
 
 
 
