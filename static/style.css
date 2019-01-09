@@ -63,7 +63,7 @@
     stroke-width: 4.4;
 } */
 .overshoot.arc{
-    stroke:rgb(241, 143, 14);
+    stroke:rgb(252, 133, 64);
 }
 
 .extra.arc{
@@ -83,8 +83,8 @@
 
 .clock-canvas{
     fill: #286e70;
-    stroke: rgb(80, 185, 38);
-    stroke-width:3;
+    stroke: rgb(12, 81, 94);
+    stroke-width:0;
 }
 
 

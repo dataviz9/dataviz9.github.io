@@ -7,7 +7,7 @@ function init_clock(settings) {
     clock.originX = clock.width / 2
     clock.originY = clock.height / 2
     clock.radius = Math.min(clock.originX, clock.originY) - settings.margin
-    clock.strokeWidth = (clock.radius - clock.innerRadius) / (clock.yearEnd - clock.yearStart)
+    clock.strokeWidth = (clock.radius - clock.innerRadius) / (clock.yearEnd - clock.yearStart - 8)
     clock.scales = {
         day: d3.scaleLinear().domain([0, 365]).range([0, 2 * Math.PI]),
         month: d3.scaleLinear().domain([0, 11 + 59 / 60]).range([0, 2 * Math.PI]),
@@ -53,8 +53,8 @@ function init_clock(settings) {
             .attr("cx", clock.originX)
             .attr("cy", clock.originY)
             .attr("r", clock.radius)
-            .attr("class", "clock-canvas"),
-        // .style("filter", "url(#glow)"),
+            .attr("class", "clock-canvas")
+            .style("filter", "url(#glow)"),
         line: clock.svg.append("line")
             .attr("x1", clock.originX)
             .attr("y1", 5)
@@ -224,16 +224,18 @@ function overshoot_out(clock, klass, opacity) {
 
 function update_current(clock) {
     return function (d) {
-        let target = this
         clock.current = d
         d3.selectAll(".arc")
             .classed("current", d => d.year === clock.current.year)
-            .style("opacity", function () {
-                if (this === target) {
+            .style("opacity", function (d) {
+                if (d === clock.current) {
                     return ''
                 } else {
-                    return d3.select(this).classed("overshoot") ? 1 : 0.7
+                    return d3.select(this).classed("overshoot") ? 0.5 : 0.25
                 }
+            })
+            .style("filter", function (d) {
+                return d === clock.current ? "url(#glow)" : ""
             })
         set_date(clock)(d)
     }
