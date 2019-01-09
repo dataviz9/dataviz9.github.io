@@ -7,14 +7,10 @@ function init_clock(settings) {
     clock.originX = clock.width / 2
     clock.originY = clock.height / 2
     clock.radius = Math.min(clock.originX, clock.originY) - settings.margin
-
+    clock.strokeWidth = (clock.radius - clock.innerRadius) / (clock.yearEnd - clock.yearStart)
     clock.scales = {
-        day: d3.scaleLinear()
-            .domain([0, 365])
-            .range([0, 2 * Math.PI]),
-        month: d3.scaleLinear()
-            .domain([0, 11 + 59 / 60])
-            .range([0, 2 * Math.PI]),
+        day: d3.scaleLinear().domain([0, 365]).range([0, 2 * Math.PI]),
+        month: d3.scaleLinear().domain([0, 11 + 59 / 60]).range([0, 2 * Math.PI]),
         year: d3.scaleLinear()
             .domain([clock.yearStart, clock.yearEnd])//d3.extent(data, d => +d.year))
             .range([clock.innerRadius, clock.radius])
@@ -104,8 +100,7 @@ function init_clock(settings) {
             .attr("class", "date-label")
     }
 
-    let yearAxis = d3.axisRight(clock.scales.year)
-        .ticks([5], "f")
+    let yearAxis = d3.axisRight(clock.scales.year).ticks([5], "f")
 
     clock.axis = clock.svg.append("g")
         .attr("class", "year-axis")
@@ -126,6 +121,7 @@ function init_clock(settings) {
         .attr("d", d => clock.arcs.overshoot(d))
         .attr("class", "arc")
         .attr("data-prev", 365)
+        .style("stroke-width", clock.strokeWidth)
         .attr("transform",
             "translate(" + clock.originX + "," + clock.originY + ")")
         .attr('pointer-events', 'visibleStroke')
@@ -137,7 +133,8 @@ function init_clock(settings) {
 
 function set_date(clock) {
     return d => {
-        let date = moment(d.year, 'YYYY').add(d.overshoot_day, "days")
+        console.log("kanar", d)
+        let date = moment(d.year, 'YYYY').add(Math.min(d.overshoot_day, 364), "days")
         d.overshoot_day <= 365 ?
             clock.dateLabel.dayMonth.text(date.format("D MMM")) :
             clock.dateLabel.dayMonth.text("Year")
@@ -166,6 +163,8 @@ function extra_hover(clock) {
     return function (d, i) {
         let hovered = this
         highlight_arc(hovered, ".extra.arc:not(.current)", 0.25)
+
+        console.log(d)
         set_date(clock)(d)
     }
 }
@@ -179,6 +178,7 @@ function overshoot_hover(clock) {
             .datum(d)
             .attr("d", clock.arcs.elapsed({ year: d.year, overshoot_day: 0 }))
             .attr("id", "elapsed-arc")
+            .style("stroke-width", clock.strokeWidth)
             .attr("transform",
                 "translate(" + clock.originX + "," + clock.originY + ")")
 
@@ -187,9 +187,8 @@ function overshoot_hover(clock) {
         elapsed.transition()
             // .ease(d3.easeBounce)
             .delay(80)
-            .duration(500)
+            .duration(300)
             .attrTween("d", arcTween(clock.arcs.elapsed))
-
         set_date(clock)(d)
         // let date = moment(d.year, 'YYYY').add(d.overshoot_day, "days")
         // clock.dateLabel.dayMonth.text(date.format("D MMM"))
@@ -209,13 +208,13 @@ function overshoot_out(clock, klass, opacity) {
 }
 
 function update_current(clock) {
-    return function(d) {
+    return function (d) {
         let target = this
         clock.current = d
         d3.selectAll(".arc")
             .classed("current", d => d.year === clock.current.year)
-            .style("opacity", function() {
-                if(this === target){
+            .style("opacity", function () {
+                if (this === target) {
                     return ''
                 } else {
                     return d3.select(this).classed("overshoot") ? 1 : 0.7
@@ -225,7 +224,7 @@ function update_current(clock) {
     }
 }
 
-function update(clock, file) {
+function update(clock, file, callback) {
     d3.select("#elapsed-arc").remove();
     d3.selectAll(".arc")
         .on("mouseover", null)
@@ -234,8 +233,6 @@ function update(clock, file) {
     d3.csv(file, data => {
         let years = new Set(data.map((v, i) => +v.year))
         let missingYears = clock.years.filter(y => !years.has(y))
-        // console.log(missingYears)
-        // console.log(data)
         data.forEach((v, i, _) => {
             v.year = +v.year
             v.overshoot_day = +v.overshoot_day
@@ -247,7 +244,7 @@ function update(clock, file) {
             update(current)
         } else {
             let d = data.filter(d => d.year === clock.current.year)[0]
-            let current = d.length === 0 ? { year: null } : d
+            let current = d === undefined ? { year: Math.max(...years) } : d
             update(current)
         }
 
@@ -278,12 +275,13 @@ function update(clock, file) {
                 d3.selectAll(".overshoot.arc")
                     .on("mouseover", overshoot_hover(clock))
                     .on("mouseout", overshoot_out(clock, ".overshoot.arc", 1))
-                    .on("click", update_current(clock, 0.5))
+                // .on("click", update_current(clock, 0.5))
                 d3.selectAll(".extra.arc")
                     .on("mouseover", extra_hover(clock))
                     .on("mouseout", overshoot_out(clock, ".extra.arc", 0.7))
-                    .on("click", update_current(clock, 0.25))
+                // .on("click", update_current(clock, 0.25))
             })
             .attr("data-prev", d => d.overshoot_day)
+        clock.axis.raise()
     });
 }
