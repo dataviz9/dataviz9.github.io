@@ -160,7 +160,7 @@ function highlight_arc(hovered, klass, opacity) {
         // .filter((d, i) => index !== i)
         .transition()
         .duration(50)
-        .style("opacity", function () { return this === hovered ? "" : opacity })
+        .style("opacity", function () { return this === hovered ? 1: opacity })
         .style("filter", function () {
             return this === hovered ? "url(#glow)" : ""
         })
