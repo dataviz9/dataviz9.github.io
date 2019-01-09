@@ -210,13 +210,13 @@ function overshoot_hover(clock) {
     }
 }
 
-function overshoot_out(clock, klass, opacity) {
+function overshoot_out(clock) {
     return function () {
         d3.select("#elapsed-arc").remove();
-        d3.selectAll(klass)
+        d3.selectAll(".arc")
             .transition()
             .duration(50)
-            .style("opacity", opacity)
+            .style("opacity", function () { return d3.select(this).classed("overshoot") ? 1 : 0.7 })
         // .style("filter", "")
         set_date(clock)(clock.current)
     }
@@ -291,11 +291,11 @@ function update(clock, file, callback) {
             .on("end", function () {
                 d3.selectAll(".overshoot.arc")
                     .on("mouseover", overshoot_hover(clock))
-                    .on("mouseout", overshoot_out(clock, ".overshoot.arc", 1))
+                    .on("mouseout", overshoot_out(clock))//, ".overshoot.arc", 1))
                 // .on("click", update_current(clock, 0.5))
                 d3.selectAll(".extra.arc")
                     .on("mouseover", extra_hover(clock))
-                    .on("mouseout", overshoot_out(clock, ".extra.arc", 0.7))
+                    .on("mouseout", overshoot_out(clock))//, ".extra.arc", 0.7))
                 // .on("click", update_current(clock, 0.25))
             })
             .attr("data-prev", d => d.overshoot_day)
