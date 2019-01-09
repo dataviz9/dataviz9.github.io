@@ -31,8 +31,10 @@ function initWorldmap(mapJson) {
 
   worldmap.canvas = d3.select('#worldmap')
   let svg = worldmap.canvas
-    .attr('width', worldmap.width)
-    .attr('height', worldmap.height)
+  .attr("preserveAspectRatio", "xMinyMin meet")
+  .attr("viewBox", "0 0 800 500")
+    // .attr('width', worldmap.width)
+    // .attr('height', worldmap.height)
     .append('g')
     .attr('class', 'map')
   svg.call(tip)

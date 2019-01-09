@@ -44,8 +44,10 @@ function init_clock(settings) {
     }
 
     clock.svg = d3.select('#clock')
-        .attr("width", clock.width)
-        .attr("height", clock.height);
+    .attr("preserveAspectRatio", "xMinyMin meet")
+    .attr("viewBox","0 0 500 500")
+        // .attr("width", clock.width)
+        // .attr("height", clock.height);
 
 
     clock.face = {
