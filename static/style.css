@@ -1,4 +1,6 @@
-
+body {
+    background-color: rgb(245, 243, 237);
+}
 .month-tick{
     stroke-width:1;
     stroke: grey;
