@@ -36,6 +36,9 @@ function initWorldmap(mapJson) {
     .append('g')
     .attr('class', 'map')
   svg.call(tip)
+
+
+
   worldmap.paths = svg.append('g')
     .attr('class', 'countries')
     .selectAll('path')
@@ -43,27 +46,26 @@ function initWorldmap(mapJson) {
     .enter().append('path')
     .attr('d', worldmap.geopath)
     .attr('class', 'country-footprint')
-    .style('opacity', 0.8)
+    // .style('opacity', 0.8)
     .style('stroke', 'white')
     .style('stroke-width', 0.3)
     .on('mouseover', function (d) {
       tip.show(d)
-      d3.select(this)
-        .transition()
-        .duration(500)
-        .style('opacity', 1)
-        .style('stroke', 'purple')
-        .style('stroke-width', 2)
+      highlight_country(this, true)
     })
     .on('mouseout', function (d) {
       tip.hide(d)
-      d3.select(this)
-        .transition()
-        .duration(500)
-        .style('opacity', 0.8)
-        .style('stroke', 'white')
-        .style('stroke-width', 0.3)
+      highlight_country(this, this === worldmap.highlighted)
+      // if (this !== worldmap.highlighted) {
+      //   d3.select(this)
+      //     .transition()
+      //     .duration(500)
+      //     .style('opacity', 0.8)
+      //     .style('stroke', 'white')
+      //     .style('stroke-width', 0.3)
+      // }
     })
+
 
   svg.append('path')
     .datum(topojson.mesh(mapJson.features, (a, b) => a.id !== b.id))
@@ -71,6 +73,16 @@ function initWorldmap(mapJson) {
     .attr('d', worldmap.geopath)
 
   return worldmap
+}
+
+function highlight_country(path, highlight = true) {
+  d3.select(path)
+    .transition()
+    .duration(300)
+    // .style('opacity', d => highlight === true ? 1 : 1)
+    .style('stroke', d => highlight === true ? "purple" : 'white')
+    .style('stroke-width', d => highlight === true ? 1.5 : 0.3)
+    .style("filter", d => highlight===true ? "url(#glow)" : "")
 }
 
 function updateWorldData(data) {

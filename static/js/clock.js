@@ -47,12 +47,14 @@ function init_clock(settings) {
         .attr("width", clock.width)
         .attr("height", clock.height);
 
+
     clock.face = {
         main: clock.svg.append("circle")
             .attr("cx", clock.originX)
             .attr("cy", clock.originY)
             .attr("r", clock.radius)
             .attr("class", "clock-canvas"),
+        // .style("filter", "url(#glow)"),
         line: clock.svg.append("line")
             .attr("x1", clock.originX)
             .attr("y1", 5)
@@ -64,6 +66,7 @@ function init_clock(settings) {
             .attr("cy", clock.originY)
             .attr("r", clock.innerRadius - 1)
             .attr("class", "inner-circle")
+            .style("filter", "url(#glow)")
             .raise(),
     }
 
@@ -89,16 +92,7 @@ function init_clock(settings) {
             })
     }
 
-    clock.dateLabel = {
-        dayMonth: clock.svg.append("text")
-            .attr('x', clock.originX)
-            .attr("y", clock.originY - 5)
-            .attr("class", "date-label day"),
-        year: clock.svg.append("text")
-            .attr('x', clock.originX)
-            .attr("y", clock.originY + 15)
-            .attr("class", "date-label")
-    }
+
 
     let yearAxis = d3.axisRight(clock.scales.year).ticks([5], "f")
 
@@ -126,6 +120,17 @@ function init_clock(settings) {
             "translate(" + clock.originX + "," + clock.originY + ")")
         .attr('pointer-events', 'visibleStroke')
 
+    clock.face.inner.raise()
+    clock.dateLabel = {
+        dayMonth: clock.svg.append("text")
+            .attr('x', clock.originX)
+            .attr("y", clock.originY - 5)
+            .attr("class", "date-label day"),
+        year: clock.svg.append("text")
+            .attr('x', clock.originX)
+            .attr("y", clock.originY + 15)
+            .attr("class", "date-label")
+    }
     clock.current = { year: null }
 
     return clock
@@ -133,18 +138,17 @@ function init_clock(settings) {
 
 function set_date(clock) {
     return d => {
-        console.log("kanar", d)
         let date = moment(d.year, 'YYYY').add(Math.min(d.overshoot_day, 364), "days")
         d.overshoot_day <= 365 ?
             clock.dateLabel.dayMonth.text(date.format("D MMM")) :
             clock.dateLabel.dayMonth.text("Year")
         clock.dateLabel.year.text(date.format("YYYY"))
+        // .style("filter", "url(#glow)")
     }
 }
 
 function arcTween(arcFunction) {
     return function (d) {
-        // console.log(this)
         let prevDay = d3.select(this).attr("data-prev")
         let interp = d3.interpolate({ year: +d.year, overshoot_day: +prevDay }, d)
         return t => arcFunction(interp(t))
@@ -157,14 +161,15 @@ function highlight_arc(hovered, klass, opacity) {
         .transition()
         .duration(50)
         .style("opacity", function () { return this === hovered ? "" : opacity })
+        .style("filter", function () {
+            return this === hovered ? "url(#glow)" : ""
+        })
 }
 
 function extra_hover(clock) {
     return function (d, i) {
         let hovered = this
         highlight_arc(hovered, ".extra.arc:not(.current)", 0.25)
-
-        console.log(d)
         set_date(clock)(d)
     }
 }
@@ -181,14 +186,23 @@ function overshoot_hover(clock) {
             .style("stroke-width", clock.strokeWidth)
             .attr("transform",
                 "translate(" + clock.originX + "," + clock.originY + ")")
+            .style("filter", "url(#glow)")
+
+
 
         clock.axis.raise()
+        // clock.face.inner.raise()
 
-        elapsed.transition()
+        elapsed
+            .transition()
             // .ease(d3.easeBounce)
             .delay(80)
             .duration(300)
             .attrTween("d", arcTween(clock.arcs.elapsed))
+        // .on("end", function () {
+        //     console.log(this)
+        //     d3.select(this).style("filter", "url(#glow)")
+        // })
         set_date(clock)(d)
         // let date = moment(d.year, 'YYYY').add(d.overshoot_day, "days")
         // clock.dateLabel.dayMonth.text(date.format("D MMM"))
@@ -203,6 +217,7 @@ function overshoot_out(clock, klass, opacity) {
             .transition()
             .duration(50)
             .style("opacity", opacity)
+        // .style("filter", "")
         set_date(clock)(clock.current)
     }
 }

@@ -31,7 +31,8 @@
 .date-label{
     text-anchor: middle;
     fill: orange;
-    font-family: 'Courier New', Courier, monospace'
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
 }
 
 .date-label.day{

@@ -1,3 +1,5 @@
+
+
 let CLOCK = {
     width: 500,
     height: 500,
@@ -49,7 +51,9 @@ let slider = d3.queue()
     .await(function (error, footprints, countries) {
         let worldmap = initWorldmap(countries)
         worldmap.paths.on("click", function (d) {
+            highlight_country(worldmap.highlighted, false)
             update(clock, "static/splitted_data/" + d.id + ".csv")
+            worldmap.highlighted = this
         })
         worldmap.canvas.on("dblclick", d => {
             console.log(d);
