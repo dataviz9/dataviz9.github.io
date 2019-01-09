@@ -160,3 +160,15 @@
   .details {
     color: white;
   }
+
+
+  #github-icon{
+      height: 30px;
+  }
+
+  .navbar .navbar-header .navbar-brand {
+    display: block;
+    text-align:center;
+    float: none;
+    vertical-align: top;
+}

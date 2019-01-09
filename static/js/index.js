@@ -58,6 +58,7 @@ let slider = d3.queue()
         })
         worldmap.canvas.on("dblclick", d => {
             update(clock, "static/splitted_data/WORLD.csv")
+            d3.select("#country-select").property("value", "WORLD")
         })
         let slider = slide(footprints, function (val) {
             let year = moment(val).year()
