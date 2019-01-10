@@ -5,10 +5,6 @@ let CLOCK = {
     height: 500,
     innerRadius: 30,
     margin: 50,
-    month: [
-        "January", "February", "March", "April", "May", "June", "July",
-        "August", "September", "October", "November", "December"
-    ],
     yearStart: 1960,
     yearEnd: 2015,
     years: Array.from({ length: 2016 - 1960 },
