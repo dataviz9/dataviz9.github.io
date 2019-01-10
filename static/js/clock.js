@@ -27,27 +27,29 @@ function init_clock(settings) {
         overshoot: d3.arc()
             .innerRadius(d => clock.scales.year(+d.year))
             .outerRadius(d => clock.scales.year(+d.year))
-            .startAngle(d => clock.scales.day(Math.min(365, +d.overshoot_day)))
-            .endAngle(clock.scales.day(365)),
+            .startAngle(clock.scales.day(0))
+            .endAngle(d => clock.scales.day(Math.min(365, d.overshoot_day))),
 
         extra: d3.arc()
             .innerRadius(d => clock.scales.year(+d.year))
             .outerRadius(d => clock.scales.year(+d.year))
-            .startAngle(clock.scales.day(0))
-            .endAngle(d => clock.scales.day(Math.min(365, +d.overshoot_day - 365))),
+            .startAngle(d => clock.scales.day(Math.min(365, +d.overshoot_day - 365)))
+            .endAngle(clock.scales.day(365)),
+            // .startAngle(clock.scales.day(0))
+            // .endAngle(d => clock.scales.day(Math.min(365, +d.overshoot_day - 365))),
 
         elapsed: d3.arc()
             .innerRadius(d => clock.scales.year(d.year))
             .outerRadius(d => clock.scales.year(d.year))
-            .startAngle(clock.scales.day(0))
-            .endAngle(d => clock.scales.day(Math.min(365, d.overshoot_day)))
+            .startAngle(d => clock.scales.day(Math.min(365, +d.overshoot_day)))
+            .endAngle(clock.scales.day(365)),
     }
 
     clock.svg = d3.select('#clock')
-    .attr("preserveAspectRatio", "xMinYMin meet")
-    .attr("viewBox","0 0 500 500")
-        // .attr("width", clock.width)
-        // .attr("height", clock.height);
+        .attr("preserveAspectRatio", "xMinYMin meet")
+        .attr("viewBox", "0 0 500 500")
+    // .attr("width", clock.width)
+    // .attr("height", clock.height);
 
 
     clock.face = {
@@ -56,7 +58,7 @@ function init_clock(settings) {
             .attr("cy", clock.originY)
             .attr("r", clock.radius)
             .attr("class", "clock-canvas"),
-            // .style("filter", "url(#glow)"),
+        // .style("filter", "url(#glow)"),
         line: clock.svg.append("line")
             .attr("x1", clock.originX)
             .attr("y1", 5)
@@ -162,7 +164,7 @@ function highlight_arc(hovered, klass, opacity) {
         // .filter((d, i) => index !== i)
         .transition()
         .duration(50)
-        .style("opacity", function () { return this === hovered ? 1: opacity })
+        .style("opacity", function () { return this === hovered ? 1 : opacity })
         .style("filter", function () {
             return this === hovered ? "url(#glow)" : ""
         })
@@ -181,9 +183,9 @@ function overshoot_hover(clock) {
         let hovered = this
         highlight_arc(hovered, ".overshoot.arc:not(.current)", 0.5)
         let elapsed = clock.svg.append("path")
-            .attr("data-prev", 0)
+            .attr("data-prev", 365)
             .datum(d)
-            .attr("d", clock.arcs.elapsed({ year: d.year, overshoot_day: 0 }))
+            .attr("d", clock.arcs.elapsed({ year: d.year, overshoot_day: 365 }))
             .attr("id", "elapsed-arc")
             .style("stroke-width", clock.strokeWidth)
             .attr("transform",

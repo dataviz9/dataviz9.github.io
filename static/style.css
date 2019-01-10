@@ -61,7 +61,8 @@ body {
     stroke-width: 4.4;
 } */
 .overshoot.arc{
-    stroke:#ffa801; 
+    stroke:rgb(23, 212, 23);
+    /* #ffa801;  */
     /* rgb(252, 133, 64); */
 }
 
@@ -78,12 +79,14 @@ body {
 
 #elapsed-arc{
     /* stroke:rgb(80, 185, 38); */
-    stroke: limegreen;
+    stroke: orangered;
+    /* limegreen; */
     stroke-width: 4;
 }
 
 .clock-canvas{
-    fill: #286e70;
+    fill:rgb(121, 95, 81);
+     /* #286e70; */
     stroke: rgb(12, 81, 94);
     stroke-width:0;
 }
