@@ -104,13 +104,13 @@ function updateWorld(worldmap, year) {
 
     d3.selectAll(".country-footprint")
       .transition()
-      .duration(150)
+      .duration(200)
       .attr("fill", "grey")
 
     d3.selectAll('.country-footprint')
       .data(updated, d => d.id)
       .transition()
-      .duration(150)
+      .duration(200)
       .attr('fill', function (d) {
         return d.footprint === undefined ? 'grey' : worldmap.color(d.footprint)
       })

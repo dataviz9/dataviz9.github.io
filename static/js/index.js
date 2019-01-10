@@ -57,6 +57,8 @@ let slider = d3.queue()
             d3.select("#country-select").property("value", d.id)
         })
         worldmap.canvas.on("dblclick", d => {
+            highlight_country(worldmap.highlighted, false)
+            worldmap.highlighted = undefined
             update(clock, "static/splitted_data/WORLD.csv")
             d3.select("#country-select").property("value", "WORLD")
         })
