@@ -17,32 +17,6 @@ let CLOCK = {
 
 let clock = init_clock(CLOCK)
 
-d3.csv("static/countries.csv", function (error, data) {
-    var dropdown = d3.select("#country-select")
-    dropdown.append("option")
-        .attr("value", "WORLD")
-        .text("World");
-    data.sort((a, b) => a.country.localeCompare(b.country))
-    data.forEach(function (v, i, _) {
-        // fetch("static/splitted_data/" + v.code + ".csv",
-        //     { method: 'HEAD', })
-        //     .then(function (resp) {
-        if (v.code !== "WORLD")
-            dropdown.append("option")
-                .attr("value", v.code)
-                .text(v.country);
-        // })
-    })
-
-
-    // console.log(dropdown.property("value"))
-    update(clock, "static/splitted_data/WORLD.csv")
-    dropdown.on("change", function () {
-        update(clock, "static/splitted_data/" + this.value + ".csv")
-    })
-
-    d3.select("#country-select").property("value", "WORLD")
-})
 
 let slider = d3.queue()
     .defer(d3.json, 'static/footprint.json')
@@ -83,11 +57,41 @@ let slider = d3.queue()
                 })
         })
         clock.overshoots.on('click', d => slider.value(moment(d.year, "YYYY")))
+
+        d3.csv("static/countries.csv", function (error, data) {
+            var dropdown = d3.select("#country-select")
+            dropdown.append("option")
+                .attr("value", "WORLD")
+                .text("World");
+            data.sort((a, b) => a.country.localeCompare(b.country))
+            data.forEach(function (v, i, _) {
+                // fetch("static/splitted_data/" + v.code + ".csv",
+                //     { method: 'HEAD', })
+                //     .then(function (resp) {
+                if (v.code !== "WORLD")
+                    dropdown.append("option")
+                        .attr("value", v.code)
+                        .text(v.country);
+                // })
+            })
+
+
+            // console.log(dropdown.property("value"))
+            update(clock, "static/splitted_data/WORLD.csv")
+            dropdown.on("change", function () {
+                let country = this.value
+                update(clock, "static/splitted_data/" + country + ".csv")
+                highlight_country(worldmap.highlighted, false)
+                worldmap.paths.filter(d => d.id === country)
+                    .call(d => {
+                        worldmap.highlighted = d.node()
+                        highlight_country(worldmap.highlighted, true)
+                    })
+            })
+
+            d3.select("#country-select").property("value", "WORLD")
+        })
     })
-
-
-
-
 
 
 
