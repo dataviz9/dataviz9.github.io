@@ -24,7 +24,7 @@ function initWorldmap(mapJson) {
     .html(function (d) {
       return "<strong>Country: </strong><span class='details'>" +
         d.properties.name + '<br></span>' +
-        "<strong>Footprint: </strong><span class='details'>" +
+        "<strong>Footprint / pers : </strong><span class='details'>" +
         d3.format(',')(d.footprint) + '</span>'
     })
 
