@@ -17,7 +17,7 @@ function slide(json, callback) {
   let gTime = d3
     .select('div#slider-time')
     .append('svg')
-    .attr("preserveAspectRatio", "xMinyMin meet")
+    .attr("preserveAspectRatio", "xMinYMin meet")
     .attr("viewBox", "0 0 1000 200")
     .append('g')
     .attr('transform', 'translate(50,10)')
