@@ -27,14 +27,14 @@ function init_clock(settings) {
         overshoot: d3.arc()
             .innerRadius(d => clock.scales.year(+d.year))
             .outerRadius(d => clock.scales.year(+d.year))
-            .startAngle(d => clock.scales.day(Math.min(365, +d.overshoot_day)))
+            .startAngle(d => clock.scales.day(Math.min(365, +d.overshoot_day % 365)))
             .endAngle(clock.scales.day(365)),
 
         extra: d3.arc()
             .innerRadius(d => clock.scales.year(+d.year))
             .outerRadius(d => clock.scales.year(+d.year))
             .startAngle(clock.scales.day(0))
-            .endAngle(d => clock.scales.day(Math.min(365, +d.overshoot_day - 365))),
+            .endAngle(d => clock.scales.day(Math.min(365, +d.overshoot_day % 365))),
 
         elapsed: d3.arc()
             .innerRadius(d => clock.scales.year(d.year))
@@ -44,10 +44,10 @@ function init_clock(settings) {
     }
 
     clock.svg = d3.select('#clock')
-    .attr("preserveAspectRatio", "xMinYMin meet")
-    .attr("viewBox","0 0 500 500")
-        // .attr("width", clock.width)
-        // .attr("height", clock.height);
+        .attr("preserveAspectRatio", "xMinYMin meet")
+        .attr("viewBox", "0 0 500 500")
+    // .attr("width", clock.width)
+    // .attr("height", clock.height);
 
 
     clock.face = {
@@ -56,7 +56,7 @@ function init_clock(settings) {
             .attr("cy", clock.originY)
             .attr("r", clock.radius)
             .attr("class", "clock-canvas"),
-            // .style("filter", "url(#glow)"),
+        // .style("filter", "url(#glow)"),
         line: clock.svg.append("line")
             .attr("x1", clock.originX)
             .attr("y1", 5)
@@ -111,12 +111,23 @@ function init_clock(settings) {
         }
     })
 
-    clock.overshoots = clock.svg.selectAll(".arc")
+    clock.overshoots = clock.svg.selectAll(".arc.left")
         .data(init_overshoot, d => d.year).enter()
         .append("svg:path")
         .attr("d", d => clock.arcs.overshoot(d))
-        .attr("class", "arc")
+        .attr("class", "arc left")
         .attr("data-prev", 365)
+        .style("stroke-width", clock.strokeWidth)
+        .attr("transform",
+            "translate(" + clock.originX + "," + clock.originY + ")")
+        .attr('pointer-events', 'visibleStroke')
+
+    clock.complements = clock.svg.selectAll(".arc.right")
+        .data(init_overshoot, d => d.year).enter()
+        .append("svg:path")
+        .attr("d", d => clock.arcs.extra(d))
+        .attr("class", "arc right")
+        .attr("data-prev", 0)
         .style("stroke-width", clock.strokeWidth)
         .attr("transform",
             "translate(" + clock.originX + "," + clock.originY + ")")
@@ -162,7 +173,7 @@ function highlight_arc(hovered, klass, opacity) {
         // .filter((d, i) => index !== i)
         .transition()
         .duration(50)
-        .style("opacity", function () { return this === hovered ? 1: opacity })
+        .style("opacity", function () { return this === hovered ? 1 : opacity })
         .style("filter", function () {
             return this === hovered ? "url(#glow)" : ""
         })
@@ -280,10 +291,10 @@ function update(clock, file, callback) {
                 })
             })
 
-        d3.selectAll(".arc")
+        d3.selectAll(".arc.left")
             .data(data, d => +d.year)
             .classed("overshoot", d => d.overshoot_day <= 365)
-            .classed("extra", d => d.overshoot_day > 365)
+            .classed("full-year", d => d.overshoot_day > 365)
             .classed("current", d => d.year === clock.current.year)
             .transition()
             .duration(500)
@@ -295,9 +306,10 @@ function update(clock, file, callback) {
 
             .style("opacity", "")
             .attrTween("d", function (d) {
-                return (d.overshoot_day <= 365) ?
-                    arcTween(clock.arcs.overshoot).bind(this)(d) :
-                    arcTween(clock.arcs.extra).bind(this)(d)
+                // return (d.overshoot_day <= 365) ?
+                    return arcTween(clock.arcs.overshoot).bind(this)(d) 
+                    // arcTween(clock.arcs.overshoot).bind(this)(d) :
+                    // arcTween(clock.arcs.extra).bind(this)(d)
             })
             .on("end", function () {
                 d3.selectAll(".overshoot.arc")
@@ -308,6 +320,28 @@ function update(clock, file, callback) {
                     .on("mouseover", extra_hover(clock))
                     .on("mouseout", overshoot_out(clock))//, ".extra.arc", 0.7))
                 // .on("click", update_current(clock, 0.25))
+            })
+            .attr("data-prev", d => d.overshoot_day)
+
+            d3.selectAll(".arc.right")
+            .data(data, d => +d.year)
+            .classed("extra", d => d.overshoot_day > 365)
+            .classed("remaining", d => d.overshoot_day <= 365)
+            .classed("current", d => d.year === clock.current.year)
+            .transition()
+            .duration(500)
+            // .attr("class", d => {
+            //     let klass = (d.overshoot_day <= 365) ? "overshoot arc" : "extra arc"
+            //     klass += d.year === clock.current.year ? " current" : ""
+            //     return klass
+            // })
+
+            .style("opacity", "")
+            .attrTween("d", function (d) {
+                // return (d.overshoot_day <= 365) ?
+                    return arcTween(clock.arcs.extra).bind(this)(d) 
+                    // arcTween(clock.arcs.overshoot).bind(this)(d) :
+                    // arcTween(clock.arcs.extra).bind(this)(d)
             })
             .attr("data-prev", d => d.overshoot_day)
         clock.axis.raise()
