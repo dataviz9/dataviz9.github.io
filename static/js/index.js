@@ -66,6 +66,9 @@ d3.queue()
 
         clock.overshoots.on('click', d => slider.value(moment(d.year, "YYYY")))
 
+        let linechart = initLineChart()
+        addLine(linechart, "USA")
+
         d3.csv("static/countries.csv", function (error, data) {
             var dropdown = d3.select("#country-select")
             dropdown.append("option")
