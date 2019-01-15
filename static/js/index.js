@@ -20,12 +20,15 @@ d3.queue()
     .defer(d3.json, 'static/world_countries.json')
     // .defer(d3.csv, 'static/footprintByYear/2014.csv')
     .await(function (error, footprints, countries) {
+        let linechart = initLineChart()
+        addLine(linechart, "WORLD")
         let worldmap = initWorldmap(countries)
         worldmap.paths.on("click", function (d) {
             highlight_country(worldmap.highlighted, false)
             update(clock, "static/splitted_data/" + d.id + ".csv")
             worldmap.highlighted = this
             d3.select("#country-select").property("value", d.id)
+            addLine(linechart, d.id)
         })
         worldmap.canvas.on("dblclick", d => {
             highlight_country(worldmap.highlighted, false)
@@ -42,6 +45,8 @@ d3.queue()
         })
         setSource(worldmap, "footprint", false)
 
+        
+        // addLine(linechart, "AUS")
 
         let slider = initSlider(footprints, function (val) {
             let year = moment(val).year()
@@ -49,6 +54,7 @@ d3.queue()
             let datum = clock.overshoots.select(d =>
                 d.year === year ? this : null).datum()
             update_current(clock)(datum)
+            setDate(linechart, year)
         })
         slider.on("end", function () {
             d3.selectAll(".arc")
@@ -66,8 +72,7 @@ d3.queue()
 
         clock.overshoots.on('click', d => slider.value(moment(d.year, "YYYY")))
 
-        let linechart = initLineChart()
-        addLine(linechart, "USA")
+        
 
         d3.csv("static/countries.csv", function (error, data) {
             var dropdown = d3.select("#country-select")

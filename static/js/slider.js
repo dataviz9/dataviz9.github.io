@@ -4,10 +4,10 @@ function initSlider(json, callback) {
   let lastYear = parseInt(d3.max(Object.keys(json)))
   var sliderScale = d3.scaleTime()
     .domain([moment(firstYear, 'YYYY').toDate(), moment(lastYear, 'YYYY').toDate()])
-    .range([0, 900])
+    .range([0, 720])
 
   let sliderTime = d3
-    .sliderHorizontal(sliderScale)
+    .sliderTop(sliderScale)
     .step(1000 * 60 * 60 * 24 * 366)
     .tickFormat(d3.timeFormat('%Y'))
     .fill("teal")
@@ -15,14 +15,12 @@ function initSlider(json, callback) {
     .on('onchange', callback)
 
   let sliderElt = d3
-    .select('div#slider-time')
-    .append('svg')
-    .attr("preserveAspectRatio", "xMinYMin meet")
-    .attr("viewBox", "0 0 1000 200")
-    .append('g')
-    .attr('transform', 'translate(50,10)')
-
-  sliderElt.call(sliderTime)
+    .select('#slider-time')
+    // .append('svg')
+    // .attr("presesssssssssssssssssssx", "0 0 500 100")
+    // .append('g')
+    .attr('transform', 'translate(30,40)')
+    .call(sliderTime)
 
   callback(moment(lastYear, 'YYYY'))
 
