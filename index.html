@@ -58,12 +58,22 @@
                     <div class="form-group row">
                         <!-- <label class="col-form-label col-sm-2 text-info" for="country">Country </label> -->
                         <div class="col-sm-9">
-                        <select class="form-control" name="country" id="country-select">
-                        </select>
+                            <select class="form-control" name="country" id="country-select">
+                            </select>
                         </div>
                     </div>
                 </form>
-                <a href="#" class="navbar-brand">Ecological Footprint per Person</a>
+                <div class="btn-group btn-group-toggle toggle-mode" data-toggle="buttons">
+                    <label class="btn btn-info active">
+                        <input type="radio" name="toggle-mode" id="footprint-mode" autocomplete="off" value="footprint"
+                            checked>
+                        Footprint per person
+                    </label>
+                    <label class="btn btn-info">
+                        <input type="radio" name="toggle-mode" id="deficit-mode" autocomplete="off" value="ratio">
+                        Deficit / Reserve
+                    </label>
+                </div>
             </div>
             <span class="nav-inline">
                 <a class="nav-link" href="https://github.com/dataviz9/dataviz9.github.io"><img src="static/github-mark-light.png"

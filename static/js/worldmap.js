@@ -11,6 +11,16 @@ function initWorldmap(mapJson) {
     .domain([0.5, 1, 2, 3, 5, 7, 8, 10, 12, 14])
     .range(['#00ff00', '#27ff01', '#73ff01', '#c0ff02', '#eef302', '#ffd301', '#ffa801', '#ff5306', '#ff270a', '#ff0200'])
 
+  worldmap.scales = {
+    footprint: d3.scaleThreshold()
+      .domain([0.5, 1, 2, 3, 5, 7, 8, 10, 12, 14])
+      .range(['#00ff00', '#27ff01', '#73ff01', '#c0ff02', '#eef302', '#ffd301', '#ffa801', '#ff5306', '#ff270a', '#ff0200']),
+    ratio: d3.scaleQuantize()
+      .domain([-1.2, 1.2])
+      .range(["#0B7506", "#349B0A", "#5DA20E", '#88AB13', '#B2B118', '#D46C03', '#C34623', '#CB2935'])
+
+  }
+
   let projection = d3.geoMercator()
     .scale(125)
     .translate([worldmap.width / 2, worldmap.height / 1.5])
@@ -31,8 +41,8 @@ function initWorldmap(mapJson) {
 
   worldmap.canvas = d3.select('#worldmap')
   let svg = worldmap.canvas
-  .attr("preserveAspectRatio", "xMinYMin meet")
-  .attr("viewBox", "0 0 800 500")
+    .attr("preserveAspectRatio", "xMinYMin meet")
+    .attr("viewBox", "0 0 800 500")
     // .attr('width', worldmap.width)
     // .attr('height', worldmap.height)
     .append('g')
@@ -58,14 +68,6 @@ function initWorldmap(mapJson) {
     .on('mouseout', function (d) {
       tip.hide(d)
       highlight_country(this, this === worldmap.highlighted)
-      // if (this !== worldmap.highlighted) {
-      //   d3.select(this)
-      //     .transition()
-      //     .duration(500)
-      //     .style('opacity', 0.8)
-      //     .style('stroke', 'white')
-      //     .style('stroke-width', 0.3)
-      // }
     })
 
 
@@ -74,32 +76,31 @@ function initWorldmap(mapJson) {
     .attr('class', 'names')
     .attr('d', worldmap.geopath)
 
-// Worldmap Legend
-// Source : https://d3-legend.susielu.com
+  // Worldmap Legend
+  // Source : https://d3-legend.susielu.com
 
-    svg.append("g")
+  svg.append("g")
     .attr("class", "legendQuant")
     .attr("transform", "translate(20,260)")
 
   let legend = d3.legendColor()
-      .labelFormat(d3.format("<.1f"))
-      // .labels(d3.legendHelpers.thresholdLabels)
-      .labels( function({
-        i,
-        genLength,
-        generatedLabels,
-        labelDelimiter
-      }) {
-        const values = generatedLabels[i].split(` ${labelDelimiter} `)
-        if (i === 0) {
-          return `< ${values[1]}`
-        } else if (i === genLength - 1) {
-          return `> ${values[0]}`
-        }
-        return `${values[0]} - ${values[1]}`
+    .labelFormat(d3.format("<.1f"))
+    .labels(function ({
+      i,
+      genLength,
+      generatedLabels,
+      labelDelimiter
+    }) {
+      const values = generatedLabels[i].split(` ${labelDelimiter} `)
+      if (i === 0) {
+        return `< ${values[1]}`
+      } else if (i === genLength - 1) {
+        return `> ${values[0]}`
       }
-      )
-      .scale(worldmap.color)
+      return `${values[0]} - ${values[1]}`
+    }
+    )
+    .scale(worldmap.color)
 
   svg.select(".legendQuant")
     .call(legend)
@@ -114,22 +115,34 @@ function highlight_country(path, highlight = true) {
     // .style('opacity', d => highlight === true ? 1 : 1)
     .style('stroke', d => highlight === true ? "purple" : 'grey')
     .style('stroke-width', d => highlight === true ? 1.5 : 0.5)
-    .style("filter", d => highlight===true ? "url(#glow)" : "")
+    .style("filter", d => highlight === true ? "url(#glow)" : "")
 }
 
 function updateWorldData(data) {
-  let footprintById = {}
+  let dataById = {}
   data.forEach(function (d) {
-    footprintById[d.id] = +d.footprint
+    dataById[d.id] = {
+      footprint: +d.footprint,
+      ratio: +d.ratio
+    }
   })
 
   let updated = d3.selectAll(".country-footprint").data()
-  updated.forEach(function (d) { d.footprint = footprintById[d.id] })
+  updated.forEach(d => {
+    if (dataById[d.id] !== undefined) {
+      d.footprint = dataById[d.id].footprint
+      d.ratio = dataById[d.id].ratio
+    } else {
+      d.footprint = undefined
+      d.ratio = undefined
+    }
+  })
   return updated
 }
 
-function updateWorld(worldmap, year) {
-  d3.csv('static/footprintByYear/' + year + '.csv', data => {
+
+function updateWorld(worldmap) {
+  d3.csv('static/footprintDeficitByYear/' + worldmap.year + '.csv', data => {
     let updated = updateWorldData(data)
 
     d3.selectAll(".country-footprint")
@@ -142,7 +155,18 @@ function updateWorld(worldmap, year) {
       .transition()
       .duration(200)
       .attr('fill', function (d) {
-        return d.footprint === undefined ? 'grey' : worldmap.color(d.footprint)
+        return d[worldmap.source] === undefined ? 'grey' : worldmap.scale(d[worldmap.source])
       })
   })
+}
+
+function setYear(worldmap, year) {
+  worldmap.year = year
+  updateWorld(worldmap)
+}
+
+function setSource(worldmap, source, update = true) {
+  worldmap.source = source
+  worldmap.scale = worldmap.scales[source]
+  if (update === true) updateWorld(worldmap)
 }

@@ -14,7 +14,8 @@ let CLOCK = {
 let clock = init_clock(CLOCK)
 
 
-let slider = d3.queue()
+
+d3.queue()
     .defer(d3.json, 'static/footprint.json')
     .defer(d3.json, 'static/world_countries.json')
     // .defer(d3.csv, 'static/footprintByYear/2014.csv')
@@ -32,11 +33,21 @@ let slider = d3.queue()
             update(clock, "static/splitted_data/WORLD.csv")
             d3.select("#country-select").property("value", "WORLD")
         })
-        let slider = slide(footprints, function (val) {
+
+
+        // Listen toggle mode between "footprint" and "deficit"
+        $("input[name='toggle-mode']").change(ev => {
+            let mode = ev.target.value
+            setSource(worldmap, mode)
+        })
+        setSource(worldmap, "footprint", false)
+
+
+        let slider = initSlider(footprints, function (val) {
             let year = moment(val).year()
-            updateWorld(worldmap, year)
-            let datum = clock.overshoots
-                .select(d => d.year === year ? this : null).datum()
+            setYear(worldmap, year)
+            let datum = clock.overshoots.select(d =>
+                d.year === year ? this : null).datum()
             update_current(clock)(datum)
         })
         slider.on("end", function () {
@@ -52,6 +63,7 @@ let slider = d3.queue()
                     }
                 })
         })
+
         clock.overshoots.on('click', d => slider.value(moment(d.year, "YYYY")))
 
         d3.csv("static/countries.csv", function (error, data) {

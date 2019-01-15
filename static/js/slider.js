@@ -1,5 +1,5 @@
 // Slider
-function slide(json, callback) {
+function initSlider(json, callback) {
   let firstYear = parseInt(d3.min(Object.keys(json)))
   let lastYear = parseInt(d3.max(Object.keys(json)))
   var sliderScale = d3.scaleTime()
@@ -14,7 +14,7 @@ function slide(json, callback) {
     .default(moment(lastYear, 'YYYY').toDate())
     .on('onchange', callback)
 
-  let gTime = d3
+  let sliderElt = d3
     .select('div#slider-time')
     .append('svg')
     .attr("preserveAspectRatio", "xMinYMin meet")
@@ -22,7 +22,7 @@ function slide(json, callback) {
     .append('g')
     .attr('transform', 'translate(50,10)')
 
-  gTime.call(sliderTime)
+  sliderElt.call(sliderTime)
 
   callback(moment(lastYear, 'YYYY'))
 
