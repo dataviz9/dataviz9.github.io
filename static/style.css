@@ -176,3 +176,7 @@ body {
     opacity: 0.8;
     cursor: default;
 }
+
+#slider-time text{
+    font-size: 10px;
+}

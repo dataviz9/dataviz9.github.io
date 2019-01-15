@@ -95,12 +95,20 @@
                 <g id="slider-time" width=100%></g>
             </svg>
         </div>
-        <div class="form-group float-right">
-            <select class="form-control" name="linechart-mode" id="linechart-select">
-                <option value="footprint">Footprint per person</option>
-                <option value="overshoot_day">Overshoot Day</option>
-                <option value="ratio">Deficit/Reserve</option>
-            </select>
+
+        <div class="float-right">
+            <div class="form-group row ">
+                <button class="btn btn-primary col-auto" id="clear-btn">Clear lines</button>
+                <label for="linechart-mode" class="col-auto col-form-label">Display data for </label>
+                <div class="col-auto">
+                    <select class="form-control" name="linechart-mode" id="linechart-select">
+                        <option value="footprint">Footprint per person</option>
+                        <option value="overshoot_day">Overshoot Day</option>
+                        <option value="ratio">Deficit/Reserve</option>
+                    </select>
+
+                </div>
+            </div>
         </div>
 
 

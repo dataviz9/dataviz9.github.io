@@ -4,7 +4,7 @@ function initSlider(json, callback) {
   let lastYear = parseInt(d3.max(Object.keys(json)))
   var sliderScale = d3.scaleTime()
     .domain([moment(firstYear, 'YYYY').toDate(), moment(lastYear, 'YYYY').toDate()])
-    .range([0, 720])
+    .range([0, 920])
 
   let sliderTime = d3
     .sliderTop(sliderScale)

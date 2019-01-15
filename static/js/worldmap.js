@@ -16,7 +16,7 @@ function initWorldmap(mapJson) {
       .domain([0.5, 1, 2, 3, 5, 7, 8, 10, 12, 14])
       .range(['#00ff00', '#27ff01', '#73ff01', '#c0ff02', '#eef302', '#ffd301', '#ffa801', '#ff5306', '#ff270a', '#ff0200']),
     ratio: d3.scaleQuantize()
-      .domain([-1.2, 1.2])
+      .domain([-1.5, 1.5])
       .range(["#0B7506", "#349B0A", "#5DA20E", '#88AB13', '#B2B118', '#D46C03', '#C34623', '#CB2935'])
 
   }
@@ -27,7 +27,7 @@ function initWorldmap(mapJson) {
 
   worldmap.geopath = d3.geoPath().projection(projection)
   // Set tooltips
-  let tip = d3.tip()
+  worldmap.tip = d3.tip()
     .attr('class', 'd3-tip')
     .direction('s')
     .offset([15, 0])
@@ -47,7 +47,7 @@ function initWorldmap(mapJson) {
     // .attr('height', worldmap.height)
     .append('g')
     .attr('class', 'map')
-  svg.call(tip)
+  svg.call(worldmap.tip)
 
 
 
@@ -61,14 +61,7 @@ function initWorldmap(mapJson) {
     // .style('opacity', 0.8)
     .style('stroke', 'grey')
     .style('stroke-width', 0.5)
-    .on('mouseover', function (d) {
-      tip.show(d)
-      highlight_country(this, true)
-    })
-    .on('mouseout', function (d) {
-      tip.hide(d)
-      highlight_country(this, this === worldmap.highlighted)
-    })
+    
 
 
   svg.append('path')
