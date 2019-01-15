@@ -1,2 +1,2 @@
-"country","year","overshoot_day","country_3_code","number.of.earth.required"
-"Vanuatu",2014,161.725402789033,"VUT",2.3
+country,year,population,BiocapPerCap,footprint,deficit,id,ratio,overshoot_day
+Vanuatu,2014,258882.995635091,2.361576044,3.796226007,-1.434649963,VUT,0.37791479231073083,191.24683485421366

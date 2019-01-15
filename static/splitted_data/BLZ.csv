@@ -1,2 +1,2 @@
-"country","year","overshoot_day","country_3_code","number.of.earth.required"
-"Belize",2014,118.206579471377,"BLZ",3.1
+country,year,population,BiocapPerCap,footprint,deficit,id,ratio,overshoot_day
+Belize,2014,351705.993593146,3.976586831,5.193841047,-1.217254216,BLZ,0.2343649343491355,135.88232874639993
