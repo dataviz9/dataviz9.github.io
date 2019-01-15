@@ -74,6 +74,36 @@ function initWorldmap(mapJson) {
     .attr('class', 'names')
     .attr('d', worldmap.geopath)
 
+// Worldmap Legend
+// Source : https://d3-legend.susielu.com
+
+    svg.append("g")
+    .attr("class", "legendQuant")
+    .attr("transform", "translate(20,260)")
+
+  let legend = d3.legendColor()
+      .labelFormat(d3.format("<.1f"))
+      // .labels(d3.legendHelpers.thresholdLabels)
+      .labels( function({
+        i,
+        genLength,
+        generatedLabels,
+        labelDelimiter
+      }) {
+        const values = generatedLabels[i].split(` ${labelDelimiter} `)
+        if (i === 0) {
+          return `< ${values[1]}`
+        } else if (i === genLength - 1) {
+          return `> ${values[0]}`
+        }
+        return `${values[0]} - ${values[1]}`
+      }
+      )
+      .scale(worldmap.color)
+
+  svg.select(".legendQuant")
+    .call(legend)
+
   return worldmap
 }
 
