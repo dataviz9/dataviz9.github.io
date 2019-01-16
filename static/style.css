@@ -188,3 +188,9 @@ body {
     stroke-linecap: round;
     stroke-width: 1.5;
 }
+
+.value-tip{
+    text-anchor : middle;
+    font-size: 10px;
+    font-weight: bold;
+}
