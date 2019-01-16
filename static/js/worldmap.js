@@ -7,15 +7,12 @@ function initWorldmap(mapJson) {
   worldmap.width = 800 - worldmap.margin.left - worldmap.margin.right
   worldmap.height = 500 - worldmap.margin.top - worldmap.margin.bottom
 
-  worldmap.color = d3.scaleThreshold()
-    .domain([0.5, 1, 2, 3, 5, 7, 8, 10, 12, 14])
-    .range(['#00ff00', '#27ff01', '#73ff01', '#c0ff02', '#eef302', '#ffd301', '#ffa801', '#ff5306', '#ff270a', '#ff0200'])
-
   worldmap.scales = {
-    footprint: d3.scaleThreshold()
-      .domain([0.5, 1, 2, 3, 5, 7, 8, 10, 12, 14])
-      .range(['#00ff00', '#27ff01', '#73ff01', '#c0ff02', '#eef302', '#ffd301', '#ffa801', '#ff5306', '#ff270a', '#ff0200']),
-    ratio: d3.scaleQuantize()
+      footprint: d3.scaleThreshold()
+      .domain([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12])
+      .range(['#00FF00','#35FF00','#6AFF00','#9FFF00','#D4FF00','#FFF600','#FFC100','#FF8C00','#FF3400','#FF0000']),
+
+      ratio: d3.scaleQuantize()
       .domain([-1.4, 1.4])
       .range(["#0B7506", "#349B0A", "#5DA20E", '#88AB13', '#B2B118', '#D46C03', '#C34623', '#CB2935'])
 
@@ -78,21 +75,21 @@ function initWorldmap(mapJson) {
 
   worldmap.legend = d3.legendColor()
     .labelFormat(d3.format("<.1f"))
-    .labels(function ({
-      i,
-      genLength,
-      generatedLabels,
-      labelDelimiter
-    }) {
-      const values = generatedLabels[i].split(` ${labelDelimiter} `)
-      if (i === 0) {
-        return `< ${values[1]}`
-      } else if (i === genLength - 1) {
-        return `> ${values[0]}`
-      }
-      return `${values[0]} - ${values[1]}`
-    }
-    )
+    // .labels(function ({
+    //   i,
+    //   genLength,
+    //   generatedLabels,
+    //   labelDelimiter
+    // }) {
+    //   const values = generatedLabels[i].split(` ${labelDelimiter} `)
+    //   if (i === 0) {
+    //     return `< ${values[1]}`
+    //   } else if (i === genLength - 1) {
+    //     return `> ${values[0]}`
+    //   }
+    //   return `${values[0]} - ${values[1]}`
+    // }
+    // )
     // .scale(worldmap.color)
     .scale(worldmap.scales.footprint)
 
@@ -166,6 +163,21 @@ function setSource(worldmap, source, update = true) {
   // worldmap.legend.scale =
   
   worldmap.legend = d3.legendColor()
+  .labelFormat(d3.format("<.1f"))
+  .labels(function ({
+    i,
+    genLength,
+    generatedLabels,
+    labelDelimiter
+  }) {
+    const values = generatedLabels[i].split(` ${labelDelimiter} `)
+    if (i === 0) {
+      return `< ${values[1]}`
+    } else if (i === genLength - 1) {
+      return `> ${values[0]}`
+    }
+    return `[${values[0]} , ${values[1]}]`
+  })
   .scale(worldmap.scales[source])
   worldmap.canvas.select(".legendQuant")
     .call(worldmap.legend)

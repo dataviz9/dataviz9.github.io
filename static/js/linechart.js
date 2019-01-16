@@ -4,7 +4,7 @@ const LINECHART = {
 
 let lineColors = [
   '#469990', '#000075', '#e6194B', '#4363d8',
-  '#f58231', '#42d4f4', '#800000', '#3cb44b', '#ffe119'
+  '#f58231', '#42d4f4', '#800000', '#3cb44b'
 ]
 
 let colorID = 0
@@ -289,6 +289,7 @@ function hoverLine(trace, legend) {
 function resetLines() {
   d3.selectAll(".linechart-legend")
     .style("opacity", "")
+
   d3.selectAll(".trace")
     .style("opacity", 1)
 
