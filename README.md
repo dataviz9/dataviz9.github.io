@@ -1,7 +1,7 @@
 # DataViz 2019
 
 The global subject of this project was the visualization of "Climate Data".  
-We as a group decided to concetrate our efforts on the ecological footprint and the overshoot day.  
+We as a group decided to concetrate our efforts on the ecological footprint, the defeicit / recover ratio and the overshoot day.  
 Here we describe the dataset,the terms and how we decided to visualize the data.
 
 The website build can be visited [here](https://dataviz9.github.io/).
@@ -24,7 +24,21 @@ Our dataset is avaible at the [Global Footprint Network](https://www.footprintne
 Based on this dataset we managed to calculate an overshoot day for each country per year. 
 ![img](http://bit.ly/2VTvDxg)
 
-We created a `csv` file for each country. The files are named after the unique 3 letter code of each country. This makes it easier to reliate our main visualizations. 
+
+We also calculated the deficit as a country's biocapacity per person (in global hectares) minus its ecological footprint per person (also in global hectares).
+
+![img1](http://bit.ly/2QTYwpE)
+
+If this deficit is greater than 0 (surplus), we divided by the ecological footprint to show the magnitude of the surplus compared with the footrpint.
+
+![img2](http://bit.ly/2QSpQo7)
+
+If the deficit is lower than 0, we divided by the biocapacity per person to show magnitude of the defecit compared with the biocapacity.
+
+![img3](http://bit.ly/2VXVdkV)
+
+
+We created a `csv` file for each country. The files are named after the unique 3 letter code of each country. This makes it easier to connect our main visualizations. Each file contains all the information needed (footprint, deficit, year,ratio)
 The data are avaible [here](https://github.com/dataviz9/dataviz9.github.io/tree/master/static/footprintByYear)
 
 Concerning the ecological footprint, we created a file for each year of avaible data. One file contains all the information about the footrpint, the country, the three letter code and the deficit which is calculated by the difference of the biocapacity per person and the footprint per person of a country. 
@@ -40,8 +54,21 @@ Other files in `json` format were needed to create a geographical map.
 Our main visualizations:
 
 * Geographical map:
+  
+  There are two different modes for this visualization.  
+  The first one shows the ecological footprint per person for each country.  
+  The second shows the ratio deficit/reserve per person for each country.  
+  We can interact with both modes by hovering the mouse on a country. The name and the ecological footprint per person of the country will be displayed. You can also click on a country to interact with the other visualizations (overshoot day clock and the linechart).  
+  The year for which the data are displayed can be controlled with the slider. The slider is conncected to the overshoot day clock
 
-  This visualization plots the ecological footprint per person to each country. 
+* Overshoot day clock
+
+  This visualization shows the overshoot day per year for each country. One full circle is equal to 365 days. If the overshoot day is greater than 365 days then the color displayed will be blue. If is less than 365 days, two different colors will be displayed. The yellow shows the days when the humanity’s resource consumption exceeds Earth’s capacity to regenerate those resources that year.  
+  The overshoot day will be displayed in the center of the clock. You can select a year by clicking. The map will be updated for the selected year or the selected country.
+  
+* Linechart
+
+  The linechart goal is to be able to compare the overshoot day, the ecological footprint or the deficit / reserve ratio for two or more countries. You can select the countries to display in the linechart by clicking in the map or by adding them via the dropdown list in the head of the page.
   
   
 
@@ -49,11 +76,20 @@ Our main visualizations:
 
 Our scripts can be found in the `js` [folder](https://github.com/dataviz9/dataviz9.github.io/tree/master/static/js)
 
+* Overshoot day clock [clock](https://github.com/dataviz9/dataviz9.github.io/tree/master/static/js/clock.js)
+* Overshoot day clock Glow [effect](https://github.com/dataviz9/dataviz9.github.io/blob/master/static/js/glow.js)
+* Map [script](https://github.com/dataviz9/dataviz9.github.io/blob/master/static/js/worldmap.js)
+* Slider [script](https://github.com/dataviz9/dataviz9.github.io/blob/master/static/js/slider.js)
+* Linechart [script](https://github.com/dataviz9/dataviz9.github.io/blob/master/static/js/linechart.js)
+* Index [script](https://github.com/dataviz9/dataviz9.github.io/blob/master/static/js/index.js) used to connect all elements and charge the data.
+
 # External libraries 
 
 - [D3 simple slider](https://github.com/johnwalley/d3-simple-slider)
 - [Moment.js](https://momentjs.com)
 - [D3 Tip](https://github.com/Caged/d3-tip)
+- [Map Legend](https://d3-legend.susielu.com)
+- [Bootstrap](https://getbootstrap.com/)
 
 # Coding technique references 
 
