@@ -22,30 +22,26 @@ d3.queue()
     .await(function (error, footprints, countries) {
         let linechart = initLineChart()
         let worldmap = initWorldmap(countries)
-        worldmap.paths.on("click", function (d) {
+
+        function selectCountry(d) {
             highlight_country(worldmap.highlighted, false)
             update(clock, "static/splitted_data/" + d.id + ".csv")
-            worldmap.highlighted = this
+            worldmap.highlighted = d.id
+            highlight_country(d.id, true)
             d3.select("#country-select").property("value", d.id)
-            if (linechart.graphics[d.id] === undefined) {
-                addLine(linechart, d.id)
-                hoverCountryTrace(linechart, d.id)
-            } else {
-                removeLine(linechart, d.id)
-                resetLines()
-            }
-        })
+            toggleChartBtn(linechart, d.id)
+        }
+
+        worldmap.paths.on("click", selectCountry)
             .on('mouseover', function (d) {
                 worldmap.tip.show(d)
-                highlight_country(this, true)
+                highlight_country(d.id, true)
                 if (linechart.graphics[d.id] !== undefined)
                     hoverCountryTrace(linechart, d.id)
-
-
             })
             .on("mouseout", function (d) {
                 worldmap.tip.hide(d)
-                highlight_country(this, this === worldmap.highlighted)
+                highlight_country(d.id, d.id === worldmap.highlighted)
                 resetLines(linechart, d.id)
             })
         worldmap.canvas.on("dblclick", d => {
@@ -93,14 +89,28 @@ d3.queue()
             slider.value(moment(d.year, "YYYY"))
         })
 
+        d3.select("#chart-btn").on("click", function () {
+            let country = d3.select("#country-select").node().value
+            if (linechart.graphics[country] === undefined) {
+                addLine(linechart, country)
+                linechart.graphics[country].legend.on("click", selectCountry)
+                hoverCountryTrace(linechart, country)
+                // selectCountry(linechart, country)
+            } else {
+                removeLine(linechart, country)
+                resetLines()
+            }
+            toggleChartBtn(linechart, country)
+        })
+
         d3.select("#linechart-select").on("change", function (d) {
             setLineSource(linechart, this.value)
         })
+
         d3.select("#clear-btn").on("click", function () {
             Object.keys(linechart.graphics)
                 .forEach(function (k, i) {
-                    if (k !== "WORLD")
-                        removeLine(linechart, k)
+                    if (k !== "WORLD") removeLine(linechart, k)
                 })
         })
 
@@ -133,9 +143,11 @@ d3.queue()
                 highlight_country(worldmap.highlighted, false)
                 worldmap.paths.filter(d => d.id === country)
                     .call(d => {
-                        worldmap.highlighted = d.node()
+                        worldmap.highlighted = d.id
                         highlight_country(worldmap.highlighted, true)
                     })
+                toggleChartBtn(linechart, country)
+
             })
 
             d3.select("#country-select").property("value", "WORLD")
@@ -144,5 +156,11 @@ d3.queue()
 
 
 
-
-
+function toggleChartBtn(linechart, country) {
+    d3.select("#chart-btn")
+        .classed("btn-success", linechart.graphics[country] === undefined)
+        .classed("btn-warning", linechart.graphics[country] !== undefined)
+        .select(".symbol")
+        .classed("fa-plus", linechart.graphics[country] === undefined)
+        .classed("fa-minus", linechart.graphics[country] !== undefined)
+}
