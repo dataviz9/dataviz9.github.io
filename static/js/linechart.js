@@ -182,6 +182,7 @@ function addLine(linechart, country) {
   }
 
   d3.csv(folder + country + '.csv', data => {
+
     updateScale(linechart, data)
     lineColor = lineColors[colorID]
     colorID += 1
