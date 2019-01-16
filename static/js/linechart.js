@@ -1,5 +1,5 @@
 const LINECHART = {
-  margin: { top: 50, right: 50, bottom: 30, left: 30 },
+  margin: { top: 50, right: 50, bottom: 30, left: 50 },
 }
 
 let lineColors = [
@@ -36,20 +36,32 @@ function initLineChart() {
 
   linechart.extents = {
     footprint: [0, 1],
-    overshoot_day: [0, 365],
+    overshoot_day: [new Date(2014, 0, 1), new Date(2014, 11, 31)],
     ratio: [-1, 1]
   }
 
   linechart.scales = {
     x: d3.scaleLinear().range([0, linechart.width])
       .domain([1961, 2014]),
-    y: d3.scaleLinear().range([linechart.height, linechart.margin.top])
-      .domain(linechart.extents[linechart.field]).nice()
+    y: undefined,
+    linear: d3.scaleLinear().range([linechart.height, linechart.margin.top])
+      .domain(linechart.extents[linechart.field])
+      .nice(linechart.extents.overshoot_day),
+    month: d3.scaleTime()
+      .domain([new Date(2014, 0, 1), new Date(2014, 11, 31)])
+      .range([linechart.height, linechart.margin.top])
+      //(d3.timeMonth.every(1))
+      .clamp(true)
   }
 
   linechart.line = d3.line()
     .x(function (d) { return linechart.scales.x(+d.year) })
-    .y(function (d) { return linechart.scales.y(+d[linechart.field]) })
+    .y(function (d) {
+      return linechart.scales.y(
+        linechart.field === "overshoot_day" ?
+          moment(2014, "YYYY").add(+d[linechart.field], "days").toDate() :
+          +d[linechart.field])
+    })
 
   // linechart.svg.append("g")
   //   .attr("transform", "translate(" + linechart.margin.left + "," + linechart.height + ")")
@@ -65,9 +77,10 @@ function initLineChart() {
     y: linechart.svg.append("g")
       .attr("transform", "translate(" + linechart.margin.left + ",0)")
       .attr("class", "linechart-axis")
-      .call(linechart.axis.y)
+
+    // .call(linechart.axis.y)
   }
-  // .select(".domain")
+  // 
 
   linechart.cursor = linechart.canvas
     .append("line")
@@ -117,22 +130,44 @@ function updateScale(linechart, data) {
   linechart.extents["footprint"] = d3.extent(
     linechart.extents["footprint"].concat(d3.extent(data, d => +d.footprint))
   )
-
-  if (linechart.field === "overshoot_day") {
-    linechart.scales.y.clamp(true)
-  } else {
-    linechart.scales.y.clamp(false).nice()
-  }
+  linechart.scales.y = linechart.field === "overshoot_day" ?
+    linechart.scales.month :
+    linechart.scales.linear
 
   linechart.scales.y.domain(linechart.extents[linechart.field])
-  linechart.axisElt.y.call(d3.axisLeft(linechart.scales.y))
+  let axis = linechart.field === "overshoot_day" ?
+    d3.axisLeft(linechart.scales.y).tickFormat(d3.timeFormat("%b")) :
+    d3.axisLeft(linechart.scales.y)
+  linechart.axisElt.y.call(axis)
+  if (linechart.field === "overshoot_day") {
+    linechart.axisElt.y.selectAll(".tick text")
+      // .style("text-anchor", "start")
+      // .attr("x", -10)
+      .attr("y", -6)
+  }
 
-  linechart.line.y(function (d) { return linechart.scales.y(+d[linechart.field]) })
+  // .select(".domain")
+  // .remove()
+
+  linechart.line.y(function (d) {
+    return linechart.scales.y(
+      linechart.field === "overshoot_day" ?
+        moment(2014, "YYYY").add(+d[linechart.field], "days").toDate() :
+        +d[linechart.field])
+  })
 
   d3.selectAll(".trace")
     .attr("d", linechart.line)
+    .attr("stroke-dasharray", "")
+    .attr("stroke-dashoffset", 0);
+
   d3.selectAll(".linechart-legend")
-    .attr("y", function (d) { return linechart.scales.y(d[linechart.field]) + 4 })
+    .attr("y", function (d) {
+      return (linechart.scales.y(
+        linechart.field === "overshoot_day" ?
+          moment(2014, "YYYY").add(+d[linechart.field], "days").toDate() :
+          +d[linechart.field]) + 4)
+    })
 }
 
 function addLine(linechart, country) {
@@ -147,7 +182,6 @@ function addLine(linechart, country) {
   }
 
   d3.csv(folder + country + '.csv', data => {
-
     updateScale(linechart, data)
     lineColor = lineColors[colorID]
     colorID += 1
@@ -158,22 +192,37 @@ function addLine(linechart, country) {
     let legend = linechart.graphics[country].legend
       .datum(last)
       .attr("x", d => linechart.scales.x(d.year) + 2)
-      .attr("y", d => linechart.scales.y(d[linechart.field]) + 4)
+      .attr("y", d => {
+        return (linechart.scales.y(
+          linechart.field === "overshoot_day" ?
+            moment(2014, "YYYY").add(+d[linechart.field], "days").toDate() :
+            +d[linechart.field])
+          + 4)
+      })
       .text(d => d.id)
       .attr("class", "linechart-legend")
       .style("stroke", lineColor)
+
     let trace = linechart.graphics[country].trace
       .datum(data)
       .attr("class", "trace")
       .style("stroke", lineColor)
       .attr("d", linechart.line)
-      .call(transition)
 
-    legend.on("mouseover",function(){
+    let totalLength = trace.node().getTotalLength()
+    trace.attr("stroke-dasharray", totalLength + " " + totalLength)
+      .attr("stroke-dashoffset", totalLength)
+      .transition()
+      .duration(1000)
+      // .ease("linear")
+      .attr("stroke-dashoffset", 0);
+    // .call(transition)
+
+    legend.on("mouseover", function () {
       linechart.tip.show(legend.datum())
       hoverLine(trace, legend)()
     })
-      .on("mouseout", function(){
+      .on("mouseout", function () {
         linechart.tip.hide()
         resetLines()
       })
@@ -199,7 +248,7 @@ function resetLines() {
     .style("opacity", "")
   d3.selectAll(".trace")
     .style("opacity", 1)
-  
+
 }
 
 function hoverCountryTrace(linechart, country) {

@@ -16,7 +16,7 @@ function initWorldmap(mapJson) {
       .domain([0.5, 1, 2, 3, 5, 7, 8, 10, 12, 14])
       .range(['#00ff00', '#27ff01', '#73ff01', '#c0ff02', '#eef302', '#ffd301', '#ffa801', '#ff5306', '#ff270a', '#ff0200']),
     ratio: d3.scaleQuantize()
-      .domain([-1.5, 1.5])
+      .domain([-1.4, 1.4])
       .range(["#0B7506", "#349B0A", "#5DA20E", '#88AB13', '#B2B118', '#D46C03', '#C34623', '#CB2935'])
 
   }
