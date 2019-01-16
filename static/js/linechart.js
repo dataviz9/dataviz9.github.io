@@ -8,6 +8,14 @@ const LINECHART = {
 //   .attr("viewBox", "0 0 800 "+height)
 // }
 
+
+COOOOLLOOORRSSS = [
+  "#2a2d34", "#009ddc", "#6761a8", "#ff3a20", "#020887",
+  "#590925", "#1affd5", "#7d83ff", "#335c67", "#e09f3e"
+]
+
+
+
 function initLineChart() {
 
   let linechart = LINECHART
@@ -151,6 +159,7 @@ function addLine(linechart, country) {
       .attr("stroke-linecap", "round")
       .attr("stroke-width", 1.5)
       .attr("d", linechart.line)
+      .call(transition)
 
     legend.on("mouseover",
       hoverLine(trace, legend)
@@ -198,4 +207,15 @@ function setLineSource(linechart, source) {
   linechart.field = source
   console.log(d3.selectAll(".trace").datum())
   updateScale(linechart, [])
+}
+
+function transition(path) {
+  path.transition()
+      .duration(1000)
+      .attrTween("stroke-dasharray", tweenDash);
+}
+function tweenDash() {
+  var l = this.getTotalLength(),
+      i = d3.interpolateString("0," + l, l + "," + l);
+  return function (t) { return i(t); };
 }
