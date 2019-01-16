@@ -11,6 +11,7 @@ function initWorldmap(mapJson) {
       footprint: d3.scaleThreshold()
       .domain([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12])
       .range(['#00FF00','#35FF00','#6AFF00','#9FFF00','#D4FF00','#FFF600','#FFC100','#FF8C00','#FF3400','#FF0000']),
+      // .range(['#006600','#146600','#2a6600','#3f6600','#556600','#666300','#664d00','#663800','#661400','#660000']),
 
       ratio: d3.scaleQuantize()
       .domain([-1.4, 1.4])
