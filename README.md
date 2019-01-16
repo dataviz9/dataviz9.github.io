@@ -22,6 +22,7 @@ Earth Overshoot Day is the calculated illustrative calendar date on which humani
 
 Our dataset is avaible at the [Global Footprint Network](https://www.footprintnetwork.org/licenses/public-data-package-free-2018/) website.  
 Based on this dataset we managed to calculate an overshoot day for each country per year. 
+
 ![img](http://bit.ly/2VTvDxg)
 
 
