@@ -66,9 +66,6 @@ d3.queue()
         })
         setSource(worldmap, "footprint", false)
 
-
-        // addLine(linechart, "AUS")
-
         let slider = initSlider(footprints, function (val) {
             let year = moment(val).year()
             setDate(linechart, year, 0)
@@ -106,6 +103,7 @@ d3.queue()
                         removeLine(linechart, k)
                 })
         })
+
 
         addLine(linechart, "WORLD")
 

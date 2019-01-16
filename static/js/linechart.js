@@ -2,19 +2,18 @@ const LINECHART = {
   margin: { top: 50, right: 50, bottom: 30, left: 30 },
 }
 
+let lineColors = [
+  '#469990', '#000075', '#e6194B', '#4363d8',
+  '#f58231', '#42d4f4', '#800000', '#3cb44b', '#ffe119'
+]
+
+let colorID = 0
+
 // function setLinechartHeight(linechart, height){
 //   linechart.svg.transition()
 //   .duration(500)
 //   .attr("viewBox", "0 0 800 "+height)
 // }
-
-
-COOOOLLOOORRSSS = [
-  "#2a2d34", "#009ddc", "#6761a8", "#ff3a20", "#020887",
-  "#590925", "#1affd5", "#7d83ff", "#335c67", "#e09f3e"
-]
-
-
 
 function initLineChart() {
 
@@ -86,9 +85,17 @@ function initLineChart() {
     .attr("transform", "translate(" + linechart.width / 2 + "," + linechart.height / 2 + ")")
     .raise()
 
+  linechart.tip = d3.tip()
+    .attr('class', 'line-d3-tip d3-tip')
+    .direction('w')
+    .offset([-4, -10])
+    .html(function (d) {
+      return "<strong>" + d.country + "</strong>"
+    })
+
+  linechart.svg.call(linechart.tip);
+
   linechart.graphics = {}
-
-
   return linechart
 }
 
@@ -104,20 +111,20 @@ function removeLine(linechart, country) {
 
 
 function updateScale(linechart, data) {
-  linechart.extents["ratio"] =d3.extent(
+  linechart.extents["ratio"] = d3.extent(
     linechart.extents["ratio"].concat(d3.extent(data, d => +d.ratio))
   )
-  linechart.extents["footprint"] =d3.extent(
+  linechart.extents["footprint"] = d3.extent(
     linechart.extents["footprint"].concat(d3.extent(data, d => +d.footprint))
   )
 
   if (linechart.field === "overshoot_day") {
     linechart.scales.y.clamp(true)
   } else {
-    linechart.scales.y.clamp(false)
+    linechart.scales.y.clamp(false).nice()
   }
 
-  linechart.scales.y.domain(linechart.extents[linechart.field]).nice()
+  linechart.scales.y.domain(linechart.extents[linechart.field])
   linechart.axisElt.y.call(d3.axisLeft(linechart.scales.y))
 
   linechart.line.y(function (d) { return linechart.scales.y(+d[linechart.field]) })
@@ -142,6 +149,10 @@ function addLine(linechart, country) {
   d3.csv(folder + country + '.csv', data => {
 
     updateScale(linechart, data)
+    lineColor = lineColors[colorID]
+    colorID += 1
+    if (colorID > lineColors.length - 1) { colorID -= lineColors.length }
+    // let randColor = lineColors[Math.floor(Math.random() * (lineColors.length - 1))]
 
     let last = data[data.length - 1]
     let legend = linechart.graphics[country].legend
@@ -150,28 +161,30 @@ function addLine(linechart, country) {
       .attr("y", d => linechart.scales.y(d[linechart.field]) + 4)
       .text(d => d.id)
       .attr("class", "linechart-legend")
+      .style("stroke", lineColor)
     let trace = linechart.graphics[country].trace
       .datum(data)
-      .attr("fill", "none")
       .attr("class", "trace")
-      .attr("stroke", "steelblue")
-      .attr("stroke-linejoin", "round")
-      .attr("stroke-linecap", "round")
-      .attr("stroke-width", 1.5)
+      .style("stroke", lineColor)
       .attr("d", linechart.line)
       .call(transition)
 
-    legend.on("mouseover",
-      hoverLine(trace, legend)
-    )
-      .on("mouseout", resetLines)
+    legend.on("mouseover",function(){
+      linechart.tip.show(legend.datum())
+      hoverLine(trace, legend)()
+    })
+      .on("mouseout", function(){
+        linechart.tip.hide()
+        resetLines()
+      })
+
     trace.on("mouseover", hoverLine(trace, legend))
       .on("mouseout", resetLines)
   })
 }
 
 function hoverLine(trace, legend) {
-  return function () {
+  return function (d) {
     d3.selectAll(".linechart-legend")
       .filter(function (d) { return this !== legend.node() })
       .style("opacity", 0.1)
@@ -186,6 +199,7 @@ function resetLines() {
     .style("opacity", "")
   d3.selectAll(".trace")
     .style("opacity", 1)
+  
 }
 
 function hoverCountryTrace(linechart, country) {
@@ -211,11 +225,11 @@ function setLineSource(linechart, source) {
 
 function transition(path) {
   path.transition()
-      .duration(1000)
-      .attrTween("stroke-dasharray", tweenDash);
+    .duration(1000)
+    .attrTween("stroke-dasharray", tweenDash);
 }
 function tweenDash() {
   var l = this.getTotalLength(),
-      i = d3.interpolateString("0," + l, l + "," + l);
+    i = d3.interpolateString("0," + l, l + "," + l);
   return function (t) { return i(t); };
 }

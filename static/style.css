@@ -180,3 +180,11 @@ body {
 #slider-time text{
     font-size: 10px;
 }
+
+.trace {
+    fill: none;
+    /* stroke: steelblue; */
+    stroke-linejoin: round;
+    stroke-linecap: round;
+    stroke-width: 1.5;
+}

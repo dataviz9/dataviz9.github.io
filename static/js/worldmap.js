@@ -93,7 +93,8 @@ function initWorldmap(mapJson) {
       return `${values[0]} - ${values[1]}`
     }
     )
-    .scale(worldmap.color)
+    // .scale(worldmap.color)
+    .scale(worldmap.scales.ratio)
 
   svg.select(".legendQuant")
     .call(legend)
