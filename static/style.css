@@ -194,3 +194,7 @@ body {
     font-size: 10px;
     font-weight: bold;
 }
+
+.parameter-value{
+    font-weight: bold;
+}
