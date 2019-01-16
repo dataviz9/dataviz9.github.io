@@ -1,2 +1,2 @@
-country,year,population,BiocapPerCap,footprint,deficit,id,ratio,overshoot_day
-Cook Islands,2014,20725.0003876598,1.195920172,5.956188429,-4.760268257,COK,-4.980423066198474,103.07696798173811
+"country","year","population","BiocapPerCap","footprint","deficit","id","ratio","overshoot_day"
+"Cook Islands",2014,20725.0003876598,1.195920172,5.956188429,-4.760268257,"COK",-4.98042306619847,103.076967981738

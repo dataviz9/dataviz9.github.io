@@ -4,7 +4,7 @@ function initSlider(json, callback) {
   let lastYear = parseInt(d3.max(Object.keys(json)))
   var sliderScale = d3.scaleTime()
     .domain([moment(firstYear, 'YYYY').toDate(), moment(lastYear, 'YYYY').toDate()])
-    .range([0, 920])
+    .range([0, 900])
 
   let sliderTime = d3
     .sliderTop(sliderScale)
@@ -19,7 +19,7 @@ function initSlider(json, callback) {
     // .append('svg')
     // .attr("presesssssssssssssssssssx", "0 0 500 100")
     // .append('g')
-    .attr('transform', 'translate(30,40)')
+    .attr('transform', 'translate(50,40)')
     .call(sliderTime)
 
   callback(moment(lastYear, 'YYYY'))

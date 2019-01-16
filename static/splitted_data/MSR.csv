@@ -1,2 +1,2 @@
-country,year,population,BiocapPerCap,footprint,deficit,id,ratio,overshoot_day
-Montserrat,2014,5093.99986250822,1.350898039,4.626123841,-3.275225802,MSR,-3.4244803553049796,132.71279964448854
+"country","year","population","BiocapPerCap","footprint","deficit","id","ratio","overshoot_day"
+"Montserrat",2014,5093.99986250822,1.350898039,4.626123841,-3.275225802,"MSR",-3.42448035530498,132.712799644489
