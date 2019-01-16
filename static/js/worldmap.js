@@ -76,7 +76,7 @@ function initWorldmap(mapJson) {
     .attr("class", "legendQuant")
     .attr("transform", "translate(20,260)")
 
-  let legend = d3.legendColor()
+  worldmap.legend = d3.legendColor()
     .labelFormat(d3.format("<.1f"))
     .labels(function ({
       i,
@@ -94,10 +94,10 @@ function initWorldmap(mapJson) {
     }
     )
     // .scale(worldmap.color)
-    .scale(worldmap.scales.ratio)
+    .scale(worldmap.scales.footprint)
 
   svg.select(".legendQuant")
-    .call(legend)
+    .call(worldmap.legend)
 
   return worldmap
 }
@@ -162,5 +162,12 @@ function setYear(worldmap, year) {
 function setSource(worldmap, source, update = true) {
   worldmap.source = source
   worldmap.scale = worldmap.scales[source]
+  // worldmap.legend.scale =
+  
+  worldmap.legend = d3.legendColor()
+  .scale(worldmap.scales[source])
+  worldmap.canvas.select(".legendQuant")
+    .call(worldmap.legend)
+    
   if (update === true) updateWorld(worldmap)
 }

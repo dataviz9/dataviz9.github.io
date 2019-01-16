@@ -162,12 +162,14 @@ function addLine(linechart, country) {
       .text(d => d.id)
       .attr("class", "linechart-legend")
       .style("stroke", lineColor)
+      .raise()
     let trace = linechart.graphics[country].trace
       .datum(data)
       .attr("class", "trace")
       .style("stroke", lineColor)
       .attr("d", linechart.line)
       .call(transition)
+      .raise()
 
     legend.on("mouseover",function(){
       linechart.tip.show(legend.datum())
@@ -181,6 +183,7 @@ function addLine(linechart, country) {
     trace.on("mouseover", hoverLine(trace, legend))
       .on("mouseout", resetLines)
   })
+
 }
 
 function hoverLine(trace, legend) {
