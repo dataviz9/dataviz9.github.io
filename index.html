@@ -59,15 +59,15 @@
                 <form class="form-inline" style="margin-right:20px;">
                     <div class="form-group row">
                         <!-- <label class="col-form-label col-sm-2 text-info" for="country">Country </label> -->
-                        <div class="col-sm-9">
+                        <div class="col-auto">
                             <select class="form-control" name="country" id="country-select">
                             </select>
                         </div>
                     </div>
                 </form>
-                <button class="btn btn-success" style="margin-right:20px;">
-                    <i class="fas fa-chart-line"></i>&nbsp;
-                    <i class="fas fa-plus-circle"></i>
+                <button id="chart-btn" class="btn btn-warning" style="margin-right:20px;">
+                    <i class="fas fa-minus symbol"></i>&nbsp;
+                    <i class="fas fa-chart-line"></i>
                 </button>
                 <div class="btn-group btn-group-toggle toggle-mode" data-toggle="buttons">
                     <label class="btn btn-info active" data-toggle="tooltip" data-placement="top" title="National footprint divided by population">
@@ -102,7 +102,7 @@
             </svg>
         </div>
 
-        <div class="float-right">
+        <div class="float-right" style="margin-right:50px">
             <div class="form-group row ">
                 <button class="btn btn-primary col-auto" id="clear-btn">Clear lines</button>
                 <label for="linechart-mode" class="col-auto col-form-label">Display data for </label>

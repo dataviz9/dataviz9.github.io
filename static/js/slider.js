@@ -16,9 +16,6 @@ function initSlider(json, callback) {
 
   let sliderElt = d3
     .select('#slider-time')
-    // .append('svg')
-    // .attr("presesssssssssssssssssssx", "0 0 500 100")
-    // .append('g')
     .attr('transform', 'translate(50,40)')
     .call(sliderTime)
 

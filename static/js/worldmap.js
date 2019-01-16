@@ -100,8 +100,9 @@ function initWorldmap(mapJson) {
   return worldmap
 }
 
-function highlight_country(path, highlight = true) {
-  d3.select(path)
+function highlight_country(country, highlight = true) {
+  d3.selectAll(".country-footprint")
+  .filter(d => d.id === country)
     .transition()
     .duration(300)
     // .style('opacity', d => highlight === true ? 1 : 1)
