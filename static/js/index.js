@@ -50,6 +50,7 @@ d3.queue()
             update(clock, "static/splitted_data/WORLD.csv")
             d3.select("#country-select").property("value", "WORLD")
             hoverCountryTrace(linechart, "WORLD")
+            toggleChartBtn(linechart, "WORLD")
         })
 
 
@@ -160,7 +161,12 @@ function toggleChartBtn(linechart, country) {
     d3.select("#chart-btn")
         .classed("btn-success", linechart.graphics[country] === undefined)
         .classed("btn-warning", linechart.graphics[country] !== undefined)
+        .attr("data-original-title", linechart.graphics[country] === undefined ?
+            "Add country to linechart" : 
+            "Remove country from linechart"
+        )
         .select(".symbol")
         .classed("fa-plus", linechart.graphics[country] === undefined)
         .classed("fa-minus", linechart.graphics[country] !== undefined)
+        
 }

@@ -55,7 +55,7 @@
                 </li>
             </ul>
             <div class="m-auto navbar-nav">
-                <a class="navbar-brand " href="#">Earth Overshoot Day</a>
+                <a class="navbar-brand " href="#" data-toggle="tooltip" data-placement="bottom" title="Global biocapacity / (Footprint per person * global population) * 365">Earth Overshoot Day</a>
                 <form class="form-inline" style="margin-right:20px;">
                     <div class="form-group row">
                         <!-- <label class="col-form-label col-sm-2 text-info" for="country">Country </label> -->
@@ -65,12 +65,12 @@
                         </div>
                     </div>
                 </form>
-                <button id="chart-btn" class="btn btn-warning" style="margin-right:20px;">
+                <button id="chart-btn" class="btn btn-warning" style="margin-right:20px;" data-toggle="tooltip" data-placement="bottom" title="Remove country from linechart">
                     <i class="fas fa-minus symbol"></i>&nbsp;
                     <i class="fas fa-chart-line"></i>
                 </button>
                 <div class="btn-group btn-group-toggle toggle-mode" data-toggle="buttons">
-                    <label class="btn btn-info active" data-toggle="tooltip" data-placement="top" title="National footprint divided by population">
+                    <label class="btn btn-info active" data-toggle="tooltip" data-placement="bottom" title="National footprint divided by population">
                         <input type="radio" name="toggle-mode" id="footprint-mode" autocomplete="off" value="footprint"
                             checked>
                         Footprint per person
