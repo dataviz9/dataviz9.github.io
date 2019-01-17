@@ -9,8 +9,8 @@ function initWorldmap(mapJson) {
 
   worldmap.scales = {
       footprint: d3.scaleThreshold()
-      .domain([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12])
-      .range(['#00FF00','#35FF00','#6AFF00','#9FFF00','#D4FF00','#FFF600','#FFC100','#FF8C00','#FF3400','#FF0000']),
+      .domain([1, 3, 5, 7, 9, 17])
+      .range(['#2a8637', '#54a65f', '#a3d17c', '#eecd17', '#e59d4b', '#e86e10']),
       // .range(['#006600','#146600','#2a6600','#3f6600','#556600','#666300','#664d00','#663800','#661400','#660000']),
 
       ratio: d3.scaleQuantize()
@@ -33,9 +33,9 @@ function initWorldmap(mapJson) {
       return "<strong>Country: </strong><span class='details'>" +
         d.properties.name + '<br></span>' +
         "<strong>Footprint / pers : </strong><span class='details'>" +
-        d3.format(',')(d.footprint) + '</span><br/>'+
-        "<strong>Reserve : </strong><span class='details'>" +
-        d3.format(',')(d.deficit) + '</span>'
+        d3.format(',.3f')(d.footprint) + '</span><br/>' +
+        "<strong>Reserve / pers : </strong><span class='details'>" +
+        d3.format(',.3f')(d.deficit) + '</span>'
     })
 
 
@@ -77,23 +77,7 @@ function initWorldmap(mapJson) {
     .attr("transform", "translate(20,260)")
 
   worldmap.legend = d3.legendColor()
-    .labelFormat(d3.format("<.1f"))
-    // .labels(function ({
-    //   i,
-    //   genLength,
-    //   generatedLabels,
-    //   labelDelimiter
-    // }) {
-    //   const values = generatedLabels[i].split(` ${labelDelimiter} `)
-    //   if (i === 0) {
-    //     return `< ${values[1]}`
-    //   } else if (i === genLength - 1) {
-    //     return `> ${values[0]}`
-    //   }
-    //   return `${values[0]} - ${values[1]}`
-    // }
-    // )
-    // .scale(worldmap.color)
+    .labelFormat(d3.format("<.0f"))
     .scale(worldmap.scales.footprint)
 
   svg.select(".legendQuant")

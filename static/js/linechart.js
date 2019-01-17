@@ -316,6 +316,5 @@ function setDate(linechart, year, duration) {
 
 function setLineSource(linechart, source) {
   linechart.field = source
-  console.log(d3.selectAll(".trace").datum())
   updateScale(linechart, [])
 }
