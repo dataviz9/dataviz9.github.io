@@ -33,7 +33,9 @@ function initWorldmap(mapJson) {
       return "<strong>Country: </strong><span class='details'>" +
         d.properties.name + '<br></span>' +
         "<strong>Footprint / pers : </strong><span class='details'>" +
-        d3.format(',')(d.footprint) + '</span>'
+        d3.format(',')(d.footprint) + '</span><br/>'+
+        "<strong>Reserve : </strong><span class='details'>" +
+        d3.format(',')(d.deficit) + '</span>'
     })
 
 
@@ -116,7 +118,8 @@ function updateWorldData(data) {
   data.forEach(function (d) {
     dataById[d.id] = {
       footprint: +d.footprint,
-      ratio: +d.ratio
+      ratio: +d.ratio,
+      deficit: +d.deficit
     }
   })
 
@@ -125,9 +128,11 @@ function updateWorldData(data) {
     if (dataById[d.id] !== undefined) {
       d.footprint = dataById[d.id].footprint
       d.ratio = dataById[d.id].ratio
+      d.deficit = dataById[d.id].deficit
     } else {
       d.footprint = undefined
       d.ratio = undefined
+      d.deficit = undefined
     }
   })
   return updated
