@@ -8,14 +8,17 @@ function initWorldmap(mapJson) {
   worldmap.height = 500 - worldmap.margin.top - worldmap.margin.bottom
 
   worldmap.scales = {
-      footprint: d3.scaleThreshold()
+    footprint: d3.scaleThreshold()
       .domain([1, 3, 5, 7, 9, 17])
-      .range(['#2a8637', '#54a65f', '#a3d17c', '#eecd17', '#e59d4b', '#e86e10']),
-      // .range(['#006600','#146600','#2a6600','#3f6600','#556600','#666300','#664d00','#663800','#661400','#660000']),
+      .range(['#0B7506', '#5DA20E', '#B2B118', '#f4c95d', '#f28a3c', '#e55529']),
+    // .range(['#006600','#146600','#2a6600','#3f6600','#556600','#666300','#664d00','#663800','#661400','#660000']),
 
-      ratio: d3.scaleQuantize()
-      .domain([-1.4, 1.4])
-      .range(["#0B7506", "#349B0A", "#5DA20E", '#88AB13', '#B2B118', '#D46C03', '#C34623', '#CB2935'])
+    ratio:
+      // d3.scaleDiverging(d3.interpolateRdYlGn)
+      //   .domain([-2,0, 2])
+      d3.scaleQuantize()
+        .domain([-2, 2])
+        .range(['#CB2935', '#e55529', '#f28a3c', '#f4c95d', '#B2B118', '#88AB13', "#5DA20E",  "#0B7506"])
 
   }
 
@@ -61,7 +64,7 @@ function initWorldmap(mapJson) {
     // .style('opacity', 0.8)
     .style('stroke', 'grey')
     .style('stroke-width', 0.5)
-    
+
 
 
   svg.append('path')
@@ -88,7 +91,7 @@ function initWorldmap(mapJson) {
 
 function highlight_country(country, highlight = true) {
   d3.selectAll(".country-footprint")
-  .filter(d => d.id === country)
+    .filter(d => d.id === country)
     .transition()
     .duration(300)
     // .style('opacity', d => highlight === true ? 1 : 1)
@@ -105,6 +108,7 @@ function updateWorldData(data) {
       ratio: +d.ratio,
       deficit: +d.deficit
     }
+    // console.log(d, dataById[d.id])
   })
 
   let updated = d3.selectAll(".country-footprint").data()
@@ -151,26 +155,31 @@ function setSource(worldmap, source, update = true) {
   worldmap.source = source
   worldmap.scale = worldmap.scales[source]
   // worldmap.legend.scale =
-  
+
   worldmap.legend = d3.legendColor()
-  .labelFormat(d3.format("<.1f"))
-  .labels(function ({
-    i,
-    genLength,
-    generatedLabels,
-    labelDelimiter
-  }) {
-    const values = generatedLabels[i].split(` ${labelDelimiter} `)
-    if (i === 0) {
-      return `< ${values[1]}`
-    } else if (i === genLength - 1) {
-      return `> ${values[0]}`
-    }
-    return `[${values[0]} , ${values[1]}]`
-  })
-  .scale(worldmap.scales[source])
+    .labelFormat(d3.format("<.1f"))
+    .shapeHeight(20)
+    .shapePadding(0)
+    .orient('vertical')
+    .cells(9)
+    .title("kanar")
+    .labels(function ({
+      i,
+      genLength,
+      generatedLabels,
+      labelDelimiter
+    }) {
+      const values = generatedLabels[i].split(` ${labelDelimiter} `)
+      if (i === 0) {
+        return `< ${values[1]}`
+      } else if (i === genLength - 1) {
+        return `> ${values[0]}`
+      }
+      return `[${values[0]} , ${values[1]}]`
+    })
+    .scale(worldmap.scales[source])
   worldmap.canvas.select(".legendQuant")
     .call(worldmap.legend)
-    
+
   if (update === true) updateWorld(worldmap)
 }
