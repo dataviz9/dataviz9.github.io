@@ -1,10 +1,12 @@
-# DataViz 2019
+# Ecological impact
 
 The global subject of this project was the visualization of "Climate Data".  
-We as a group decided to concetrate our efforts on the ecological footprint, the defeicit / recover ratio and the overshoot day.  
+We as a group decided to concentrate our efforts on the ecological footprint, the deficit / reserve ratio and the overshoot day.  
 Here we describe the dataset,the terms and how we decided to visualize the data.
 
-The website build can be visited [here](https://dataviz9.github.io/).
+You can find the website [here](https://dataviz9.github.io/).
+
+Ce projet a été fait dans le cadre de l'UE [Dataviz](https://lyondataviz.github.io/teaching/lyon1-m2/2018/) proposé par l'Université Lyon 1. Le sujet était de créer une data visualization de données climatiques. Nous avons choisi de représenter trois composantes de l'impact écologique : l'empreinte écologique par personne par pays, le taux de déficit / réserve écologique ainsi que le jour de dépassement.
 
 # Ecological footprint
 
@@ -23,20 +25,20 @@ Earth Overshoot Day is the calculated illustrative calendar date on which humani
 Our dataset is avaible at the [Global Footprint Network](https://www.footprintnetwork.org/licenses/public-data-package-free-2018/) website.  
 Based on this dataset we managed to calculate an overshoot day for each country per year. 
 
-![img](http://bit.ly/2VTvDxg)
+![img](https://github.com/dataviz9/dataviz9.github.io/blob/master/static/img/overshoot_day_formula.png)
 
 
 We also calculated the deficit as a country's biocapacity per person (in global hectares) minus its ecological footprint per person (also in global hectares).
 
-![img1](http://bit.ly/2QTYwpE)
+![img1](https://github.com/dataviz9/dataviz9.github.io/blob/master/static/img/deficit_formula.png)
 
 If this deficit is greater than 0 (surplus), we divided by the ecological footprint to show the magnitude of the surplus compared with the footrpint.
 
-![img2](http://bit.ly/2QSpQo7)
+![img2](https://github.com/dataviz9/dataviz9.github.io/blob/master/static/img/surplus_ratio_formula.png)
 
 If the deficit is lower than 0, we divided by the biocapacity per person to show magnitude of the defecit compared with the biocapacity.
 
-![img3](http://bit.ly/2VXVdkV)
+![img3](https://github.com/dataviz9/dataviz9.github.io/blob/master/static/img/deficit_ratio_formula.png)
 
 
 We created a `csv` file for each country. The files are named after the unique 3 letter code of each country. This makes it easier to connect our main visualizations. Each file contains all the information needed (footprint, deficit, year,ratio)
