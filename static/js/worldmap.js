@@ -18,7 +18,7 @@ function initWorldmap(mapJson) {
       //   .domain([-2,0, 2])
       d3.scaleQuantize()
         .domain([-2, 2])
-        .range(['#CB2935', '#e55529', '#f28a3c', '#f4c95d', '#B2B118', '#88AB13', "#5DA20E",  "#0B7506"])
+        .range(['#CB2935', '#e55529', '#f28a3c', '#f4c95d', '#B2B118', '#88AB13', "#5DA20E", "#0B7506"])
 
   }
 
@@ -157,7 +157,7 @@ function setSource(worldmap, source, update = true) {
   // worldmap.legend.scale =
 
   worldmap.legend = d3.legendColor()
-    .labelFormat(d3.format("<.1f"))
+    .labelFormat(worldmap.source === "footprint" ? d3.format("<.0f") : d3.format("<.1f"))
     .shapeHeight(20)
     .shapePadding(0)
     .orient('vertical')
@@ -170,6 +170,12 @@ function setSource(worldmap, source, update = true) {
       labelDelimiter
     }) {
       const values = generatedLabels[i].split(` ${labelDelimiter} `)
+      let val = values[0] === "NaN" ? 0 : values[0]
+      if (worldmap.source === "ratio") {
+        return i === 0 ? "" : `${val * 100} %`
+      }
+      else
+        return `${val}`
       if (i === 0) {
         return `< ${values[1]}`
       } else if (i === genLength - 1) {
@@ -180,6 +186,7 @@ function setSource(worldmap, source, update = true) {
     .scale(worldmap.scales[source])
   worldmap.canvas.select(".legendQuant")
     .call(worldmap.legend)
+    .selectAll(".label").attr("transform", "translate(20, 5)")
 
   if (update === true) updateWorld(worldmap)
 }
