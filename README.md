@@ -42,9 +42,8 @@ If the deficit is lower than 0, we divided by the biocapacity per person to show
 
 
 We created a `csv` file for each country. The files are named after the unique 3 letter code of each country. This makes it easier to connect our main visualizations. Each file contains all the information needed (footprint, deficit, year,ratio)
-The data are avaible [here](https://github.com/dataviz9/dataviz9.github.io/tree/master/static/footprintByYear)
 
-Concerning the ecological footprint, we created a file for each year of avaible data. One file contains all the information about the footrpint, the country, the three letter code and the deficit which is calculated by the difference of the biocapacity per person and the footprint per person of a country. 
+Concerning the ecological footprint, we created a file for each year of avaible data. One file contains all the information about the footprint, the country, the three letter code and the deficit which is calculated by the difference of the biocapacity per person and the footprint per person of a country. 
 
 The footprint files are avaible [here](https://github.com/dataviz9/dataviz9.github.io/tree/master/static/footprintDeficitByYear)
 
@@ -62,7 +61,7 @@ Our main visualizations:
   The first one shows the ecological footprint per person for each country.  
   The second shows the ratio deficit/reserve per person for each country.  
   We can interact with both modes by hovering the mouse on a country. The name and the ecological footprint per person of the country will be displayed. You can also click on a country to interact with the other visualizations (overshoot day clock and the linechart).  
-  The year for which the data are displayed can be controlled with the slider. The slider is conncected to the overshoot day clock
+  The year for which the data are displayed can be controlled with the slider. The slider is connected to the overshoot day clock
 
 * Overshoot day clock
 
