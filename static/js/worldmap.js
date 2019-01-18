@@ -162,7 +162,15 @@ function setSource(worldmap, source, update = true) {
     .shapePadding(0)
     .orient('vertical')
     .cells(9)
-    .title("kanar")
+    .title(function(){
+      if (worldmap.source === "footprint"){
+        return "Footprint per person"
+      }
+      else {
+        return "Deficit / Reserve"
+      }
+    })
+    .titleWidth(80)
     .labels(function ({
       i,
       genLength,
