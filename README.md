@@ -25,30 +25,29 @@ Earth Overshoot Day is the calculated illustrative calendar date on which humani
 Our dataset is avaible at the [Global Footprint Network](https://www.footprintnetwork.org/licenses/public-data-package-free-2018/) website.  
 Based on this dataset we managed to calculate an overshoot day for each country per year. 
 
-![img](https://github.com/dataviz9/dataviz9.github.io/blob/master/static/img/overshoot_day_formula.png)
+![img](https://github.com/dataviz9/ecofootprint.github.io/blob/master/static/img/overshoot_day_formula.png)
 
 
 We also calculated the deficit as a country's biocapacity per person (in global hectares) minus its ecological footprint per person (also in global hectares).
 
-![img1](https://github.com/dataviz9/dataviz9.github.io/blob/master/static/img/deficit_formula.png)
+![img1](https://github.com/dataviz9/ecofootprint.github.io/blob/master/static/img/deficit_formula.png)
 
 If this deficit is greater than 0 (surplus), we divided by the ecological footprint to show the magnitude of the surplus compared with the footrpint.
 
-![img2](https://github.com/dataviz9/dataviz9.github.io/blob/master/static/img/surplus_ratio_formula.png)
+![img2](https://github.com/dataviz9/ecofootprint.github.io/blob/master/static/img/surplus_ratio_formula.png)
 
 If the deficit is lower than 0, we divided by the biocapacity per person to show magnitude of the defecit compared with the biocapacity.
 
-![img3](https://github.com/dataviz9/dataviz9.github.io/blob/master/static/img/deficit_ratio_formula.png)
+![img3](https://github.com/dataviz9/ecofootprint.github.io/blob/master/static/img/deficit_ratio_formula.png)
 
 
 We created a `csv` file for each country. The files are named after the unique 3 letter code of each country. This makes it easier to connect our main visualizations. Each file contains all the information needed (footprint, deficit, year,ratio)
-The data are avaible [here](https://github.com/dataviz9/dataviz9.github.io/tree/master/static/footprintByYear)
 
-Concerning the ecological footprint, we created a file for each year of avaible data. One file contains all the information about the footrpint, the country, the three letter code and the deficit which is calculated by the difference of the biocapacity per person and the footprint per person of a country. 
+Concerning the ecological footprint, we created a file for each year of avaible data. One file contains all the information about the footprint, the country, the three letter code and the deficit which is calculated by the difference of the biocapacity per person and the footprint per person of a country. 
 
-The footprint files are avaible [here](https://github.com/dataviz9/dataviz9.github.io/tree/master/static/footprintDeficitByYear)
+The footprint files are avaible [here](https://github.com/dataviz9/ecofootprint.github.io/tree/master/static/footprintDeficitByYear)
 
-We created a `csv` [file](https://github.com/dataviz9/dataviz9.github.io/blob/master/static/countries.csv) that contains the country name and its three letter code.
+We created a `csv` [file](https://github.com/dataviz9/ecofootprint.github.io/blob/master/static/countries.csv) that contains the country name and its three letter code.
 
 Other files in `json` format were needed to create a geographical map.
 
@@ -62,12 +61,13 @@ Our main visualizations:
   The first one shows the ecological footprint per person for each country.  
   The second shows the ratio deficit/reserve per person for each country.  
   We can interact with both modes by hovering the mouse on a country. The name and the ecological footprint per person of the country will be displayed. You can also click on a country to interact with the other visualizations (overshoot day clock and the linechart).  
-  The year for which the data are displayed can be controlled with the slider. The slider is conncected to the overshoot day clock
+  The year for which the data are displayed can be controlled with the slider. The slider is connected to the overshoot day clock
 
 * Overshoot day clock
 
   This visualization shows the overshoot day per year for each country. One full circle is equal to 365 days. If the overshoot day is greater than 365 days then the color displayed will be blue. If is less than 365 days, two different colors will be displayed. The yellow shows the days when the humanity’s resource consumption exceeds Earth’s capacity to regenerate those resources that year.  
   The overshoot day will be displayed in the center of the clock. You can select a year by clicking. The map will be updated for the selected year or the selected country.
+  An alternative version of the clock is available [here](https://dataviz9.github.io/ecofootprint.github.io/clock-alt/index.html)
   
 * Linechart
 
@@ -77,14 +77,14 @@ Our main visualizations:
 
 # Scripts
 
-Our scripts can be found in the `js` [folder](https://github.com/dataviz9/dataviz9.github.io/tree/master/static/js)
+Our scripts can be found in the `js` [folder](https://github.com/dataviz9/ecofootprint.github.io/tree/master/static/js)
 
-* Overshoot day clock [clock](https://github.com/dataviz9/dataviz9.github.io/tree/master/static/js/clock.js)
-* Overshoot day clock Glow [effect](https://github.com/dataviz9/dataviz9.github.io/blob/master/static/js/glow.js)
-* Map [script](https://github.com/dataviz9/dataviz9.github.io/blob/master/static/js/worldmap.js)
-* Slider [script](https://github.com/dataviz9/dataviz9.github.io/blob/master/static/js/slider.js)
-* Linechart [script](https://github.com/dataviz9/dataviz9.github.io/blob/master/static/js/linechart.js)
-* Index [script](https://github.com/dataviz9/dataviz9.github.io/blob/master/static/js/index.js) used to connect all elements and charge the data.
+* Overshoot day clock [clock](https://github.com/dataviz9/ecofootprint.github.io/tree/master/static/js/clock.js)
+* Overshoot day clock Glow [effect](https://github.com/dataviz9/ecofootprint.github.io/blob/master/static/js/glow.js)
+* Map [script](https://github.com/dataviz9/ecofootprint.github.io/blob/master/static/js/worldmap.js)
+* Slider [script](https://github.com/dataviz9/ecofootprint.github.io/blob/master/static/js/slider.js)
+* Linechart [script](https://github.com/dataviz9/ecofootprint.github.io/blob/master/static/js/linechart.js)
+* Index [script](https://github.com/dataviz9/ecofootprint.github.io/blob/master/static/js/index.js) used to connect all elements and charge the data.
 
 # External libraries 
 
